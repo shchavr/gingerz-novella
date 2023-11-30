@@ -1,13 +1,13 @@
 label scene2_script:
-    call street_monologue_script from _call_street_monologue_script
-    call rtf_watchwoman_script from _call_rtf_watchwoman_script
-    call rtf_classroom_script from _call_rtf_classroom_script
-    if branch_choice_a_b == 1:
-        call gallery_dialogue_script from _call_gallery_dialogue_script
-        call english_classroom_script from _call_english_classroom_script
-        call back_home_script from _call_back_home_script
-    else:
-        call first_desk_script from _call_first_desk_script
+    #call street_monologue_script from _call_street_monologue_script
+    #call rtf_watchwoman_script from _call_rtf_watchwoman_script
+    #call rtf_classroom_script from _call_rtf_classroom_script
+    #if branch_choice_a_b == 1:
+        #call gallery_dialogue_script from _call_gallery_dialogue_script
+    call english_classroom_script from _call_english_classroom_script
+        #call back_home_script from _call_back_home_script
+    #else:
+        #call first_desk_script from _call_first_desk_script
     return
 
 
@@ -288,8 +288,8 @@ label gallery_dialogue_script:
 
 
 
-screen english_classroom_scene_1:
-    add "bg_rtf_coffeeshop.jpg" fit "fill"
+screen english_classroom_scene_1(how):
+    add "bg_rtf_coffeeshop.jpg" fit "fill" at how
     zorder -10
 
 screen english_classroom_scene_2:
@@ -301,8 +301,9 @@ screen english_classroom_scene_3:
     zorder -10
 
 label english_classroom_script:
+    show screen english_classroom_scene_1(how = none) with usual_transition
     speech.thought "Мучительно прошла физика, и мы отправились искать кабинет английского."
-    show screen english_classroom_scene_1 with usual_transition
+    show screen english_classroom_scene_1(how = blur_out)
     show screen portrait_viktoriya_undressed_normal(how = motion.move(.3)) with usual_transition
     show screen portrait_main_undressed_normal(how = motion.move(.7)) with usual_transition
     show screen portrait_main_undressed_normal(how = motion.focus(.7))
@@ -415,8 +416,9 @@ label english_classroom_script:
             hide screen portrait_viktoriya_undressed_happy with usual_transition
             $ guess_tries = 5
     hide screen portrait_main_undressed_normal with usual_transition
-    hide screen english_classroom_scene_1 with usual_transition
+    show screen english_classroom_scene_1(how = blur_in)
     speech.thought "После этого мы долго болтали о всех мероприятиях, которые приготовил для нас вуз."
+    hide screen english_classroom_scene_1 with usual_transition
     
     show screen english_classroom_scene_2 with usual_transition
     show screen portrait_main_undressed_normal(how = motion.move(.7)) with usual_transition
@@ -594,12 +596,41 @@ label back_home_script:
 
 
 screen first_desk_scene_1:
+    add "bg_first_desk.jpg" fit "fill"
+    zorder -10
+
+screen first_desk_scene_2:
+    add "bg_stepashka.jpg" fit "fill"
     zorder -10
 
 label first_desk_script:
     show screen first_desk_scene_1 with usual_transition
-
+    speech.main "Я немного задержался, искал кабинет. Не подскажешь, какая тема?"
+    Character("???", kind = speech.egor) "Понимаю, я тоже чуть не опоздал. Зашел в {a=https://soc.urfu.ru/ru/upravlenie-razvitija-studencheskogo-potenciala/kovorkingi/#:~:text=Коворкинг%20«Радиоточка»}коворкинг{/a} вместо третьего этажа."
+    Character("???", kind = speech.egor) "Тема — Баллистика."
+    speech.main "Ха-ха, спасибо! А как зовут преподавателя?"
+    Character("???", kind = speech.egor) "Вроде, Антон Степанович."
+    speech.main "Антон Степанович, можете перелистнуть слайд?"
+    Character("???", kind = speech.kseniya) "Ха-ха-ха!"
+    speech.main "Что смешного?"
+    speech.kseniya "Андрей Викторович его зовут. А меня, кстати, Ксюша."
+    Character("???", kind = speech.egor) "Ой. Перепутал. Первый день всё-таки, никого ещё не запомнил."
+    Character("???", kind = speech.egor) "У тебя, кстати, какое-то знакомое лицо..."
+    speech.kseniya "Он создал игру про свою школу. [player_name] вроде, да ведь? Классно получилось! Читала об этом на сайте лицея."
+    speech.egor "Точно-о-о, [player_name]! Меня Егор звать. Видел геймплей, всё на высшем уровне."
+    speech.egor "Завидую твоей будущей команде по {color=#FF00FF}Основам проектной деятельности{/color}. Увлекаешься созданием игр?"
+    speech.main "Есть такое. Просто иногда хочу рассказать миру какую-то мысль. Выступать на публике не моё, писать книги тоже. Вот и нашел способ."
+    speech.thought "Так странно, что меня узнают..."
     hide screen first_desk_scene_1 with usual_transition
-    show screen text_scene(stub)
-    ""
+    show screen first_desk_scene_2 with usual_transition
+    Character("Преподаватель", kind = speech.generic) "Первый ряд! По нулям поставить в {color=#FF00FF}БРС{/color} или будете слушать меня?"
+    hide screen first_desk_scene_2 with usual_transition
+    show screen first_desk_scene_1 with usual_transition
+    speech.kseniya "Поболтаем после пары?"
+    speech.main "У меня английский. Боюсь, не успею найти кабинет."
+    speech.kseniya "У меня тоже! Мы, может, в одной группе?"
+    speech.main "Хм, у меня уровень B2, Болтенкова..."
+    speech.kseniya "Да, в одной группе. Тогда вместе и найдем аудиторию."
+    speech.main "Везёт вам. А мне на математику идти."
+    show screen first_desk_scene_2 with usual_transition
     return

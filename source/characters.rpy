@@ -46,14 +46,6 @@ screen portrait_main_dressed_sad(how):
 
 
 
-
-
-
-
-
-
-
-
 screen portrait_viktoriya_undressed_normal(how):
     add "ch_viktoriya_undressed_normal.png" xanchor .5 yanchor 1. ypos 1.05 at how
     zorder -5
@@ -81,6 +73,65 @@ screen portrait_viktoriya_dressed_sad(how):
 
 
 
+screen portrait_kseniya_undressed_normal(how):
+    add "ch_kseniya_undressed_normal.png" xanchor .5 yanchor 1. ypos 1.05 at how
+    zorder -5
+screen portrait_kseniya_undressed_happy(how):
+    add "ch_kseniya_undressed_happy.png" xanchor .5 yanchor 1. ypos 1.05 at how
+    zorder -5
+screen portrait_kseniya_undressed_surprised(how):
+    add "ch_kseniya_undressed_surprised.png" xanchor .5 yanchor 1. ypos 1.05 at how
+    zorder -5
+screen portrait_kseniya_undressed_sad(how):
+    add "ch_kseniya_undressed_sad.png" xanchor .5 yanchor 1. ypos 1.05 at how
+    zorder -5
+screen portrait_kseniya_dressed_normal(how):
+    add "ch_kseniya_dressed_normal.png" xanchor .5 yanchor 1. ypos 1.05 at how
+    zorder -5
+screen portrait_kseniya_dressed_happy(how):
+    add "ch_kseniya_dressed_happy.png" xanchor .5 yanchor 1. ypos 1.05 at how
+    zorder -5
+screen portrait_kseniya_dressed_surprised(how):
+    add "ch_kseniya_dressed_surprised.png" xanchor .5 yanchor 1. ypos 1.05 at how
+    zorder -5
+screen portrait_kseniya_dressed_sad(how):
+    add "ch_kseniya_dressed_sad.png" xanchor .5 yanchor 1. ypos 1.05 at how
+    zorder -5
+
+
+
+screen portrait_valeriya_undressed_normal(how):
+    add "ch_valeriya_undressed_normal.png" xanchor .5 yanchor 1. ypos 1.05 at how
+    zorder -5
+screen portrait_valeriya_undressed_happy(how):
+    add "ch_valeriya_undressed_happy.png" xanchor .5 yanchor 1. ypos 1.05 at how
+    zorder -5
+screen portrait_valeriya_undressed_surprised(how):
+    add "ch_valeriya_undressed_surprised.png" xanchor .5 yanchor 1. ypos 1.05 at how
+    zorder -5
+screen portrait_valeriya_undressed_sad(how):
+    add "ch_valeriya_undressed_sad.png" xanchor .5 yanchor 1. ypos 1.05 at how
+    zorder -5
+screen portrait_valeriya_dressed_normal(how):
+    add "ch_valeriya_dressed_normal.png" xanchor .5 yanchor 1. ypos 1.05 at how
+    zorder -5
+screen portrait_valeriya_dressed_happy(how):
+    add "ch_valeriya_dressed_happy.png" xanchor .5 yanchor 1. ypos 1.05 at how
+    zorder -5
+screen portrait_valeriya_dressed_surprised(how):
+    add "ch_valeriya_dressed_surprised.png" xanchor .5 yanchor 1. ypos 1.05 at how
+    zorder -5
+screen portrait_valeriya_dressed_sad(how):
+    add "ch_valeriya_dressed_sad.png" xanchor .5 yanchor 1. ypos 1.05 at how
+    zorder -5
+
+
+
+
+
+
+
+
 
 
 
@@ -95,6 +146,14 @@ transform fade_in_out:
         ease .2 alpha 0.
     on hover:
         ease .2 alpha 1.
+
+transform blur_out:
+    blur 0.
+    ease .3 blur 15.
+
+transform blur_in:
+    blur 15.
+    ease .3 blur 0.
 
 transform motion.move(start, delta = 0., period = 0.):
     xpos start

@@ -96,4 +96,5 @@ define stub = "К сожалению эта ветка еще не реализ�
 label start:
     call scene1_script from _call_scene1_script 
     call scene2_script from _call_scene2_script
+    call scene3_script 
     return

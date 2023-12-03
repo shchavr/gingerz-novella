@@ -14,7 +14,7 @@ label scene1_script:
 
 screen desk_interactive_scene:
     add "bg_desk.jpg" fit "fill"
-    zorder -10
+    zorder -10 
     showif not asking_smth:
         showif not asked_ai:
             vbox xpos .72 ypos .56 xanchor .5 yanchor .5:
@@ -124,7 +124,7 @@ screen desk_flashback_scene_3:
 
 label desk_flashback_script:
     show screen desk_flashback_scene_1 with usual_transition
-    speech.thought "Ну и выбрал я себе расписание в модеусе. Хотя как выбрал..."
+    speech.thought "Ну и выбрал я себе расписание в {color=#FF00FF}модеусе{/color}. Хотя как выбрал..."
     hide screen desk_flashback_scene_1 with usual_transition
     show screen text_scene("Неделю назад...") with usual_transition
     ""

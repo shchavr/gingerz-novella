@@ -7,8 +7,11 @@
 ### Сюжет
 Сценарий новеллы живёт [тут](https://docs.google.com/document/d/18nwaitzeEGIwOqQdAOphH5rWB4GHnxwOHaLT2rvvypk/edit). Ознакомьтесь, посмейтесь, поплачьте, в конце концов!
 ### Связь с нами
-[Дизайнер](https://vk.com/id352032180) 
+[Граф. Дизайнер](https://vk.com/id352032180) 
 [Тимлидер](https://vk.com/id378017178) 
 [Геймдизайнер](https://vk.com/id350833558) 
 [Аналитик](https://vk.com/id419958029) 
 [Разработчик](https://vk.com/id302121073) 
+
+[Новостной канал](https://t.me/+ME8wMQnQhHNmNmUy)
+[Основная беседа](https://vk.me/join/qhj41PILODA4aSwksvOQi1c3j6Z/vFIr/6Y=)

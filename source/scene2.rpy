@@ -1,16 +1,20 @@
 label scene2_script:
-    call street_monologue_script from _call_street_monologue_script
-    call rtf_watchwoman_script from _call_rtf_watchwoman_script
-    call rtf_classroom_script from _call_rtf_classroom_script
+    call street_monologue_script
+    call rtf_watchwoman_script
+    call rtf_classroom_script
     if branch_choice_a_b == 1:
-        call gallery_dialogue_script from _call_gallery_dialogue_script
+        call gallery_dialogue_script
         call coffee_script
-        call english_classroom_script from _call_english_classroom_script
+        call english_classroom_script
     else:
-        call first_desk_script from _call_first_desk_script
+        call first_desk_script
         call after_physics_script 
-    call back_home_script from _call_back_home_script
+    call back_home_script
     return
+
+
+
+
 
 
 
@@ -43,12 +47,17 @@ screen street_monologue_scene_6:
     add "bg_rtf_entrance.jpg" fit "fill"
     zorder -10
 
+define street_monologue_music = "Toby Fox — Ruins.mp3"
+
 label street_monologue_script:
     show screen street_monologue_scene_1 with usual_transition
-    speech.thought "Теперь вы знаете моё имя, место, где я учусь, и расписание на понедельник. Что про меня ещё нужно знать?"
+    play music street_monologue_music
+    speech.thought "Вы же зашли сюда, чтобы узнать что-то про айти? Или про универ... Ну, на крайний случай, про мой успешный путь и все дела..."
+    speech.thought "Ну, слушайте. Жили-были... Нет."
+    speech.thought "Однажды..."
     hide screen street_monologue_scene_1 with usual_transition
     show screen street_monologue_scene_2 with usual_transition
-    speech.thought "Я обычный первокурсник, вернее сказать, пекус. Живу в центре Екатеринбурга в {a=https://vk.com/urfu9sk}{i}9ск{/i}{/a} и сейчас иду на свой {a=https://vk.com/thefirstdayurfu}{i}первый день в Уральском Федеральном{/i}{/a}."
+    speech.thought "Ха-ха! Поверили? Да я обычный первокурсник, вернее сказать, пекус. Живу в центре Екатеринбурга в {a=https://vk.com/urfu9sk}{i}9ск{/i}{/a} и сейчас иду на свой {a=https://vk.com/thefirstdayurfu}{i}первый день в Уральском Федеральном{/i}{/a}."
     hide screen street_monologue_scene_2 with usual_transition
     show screen street_monologue_scene_3 with usual_transition
     speech.thought "Почему  {a=https://urfu.ru/ru/}{i}УрФУ{/i}{/a}? Нуу.. Я долго выбирал универ. Мне важно было близкое расположение общежитий (ребятам из {a=https://www.ural.kp.ru/daily/27555/4823514/}{i}новокольцово{/i}{/a} привет), хорошее образование, крупный город, подъемные проходные баллы."
@@ -60,7 +69,7 @@ label street_monologue_script:
     speech.thought "Ха-ха-ха-ха! Какой бред. Вуз поможет понять? Ха-ха-ха... Тем не менее, я теперь радист."
     hide screen street_monologue_scene_4 with usual_transition
     show screen street_monologue_scene_5 with usual_transition
-    speech.thought "Честно говоря, Мне страшно. Я скорее всего прав насчёт высшего образования в России. И скорее всего захочу забрать документы."
+    speech.thought "Честно говоря, Мне страшно. А вам? Я скорее всего прав насчёт высшего образования в России. И скорее всего захочу забрать документы."
     hide screen street_monologue_scene_5 with usual_transition
     show screen street_monologue_scene_6 with usual_transition
     speech.thought "А вообще, радиофак хорош. Но не с утра, когда ты пробираешься сквозь толпу, за одну минуту до пары."
@@ -87,8 +96,11 @@ screen rtf_watchwoman_scene_2:
     add "bg_rtf_staircase.jpg" fit "fill"
     zorder -10
 
+define rtf_watchwoman_music = "Toby Fox — Dating Tense!.mp3"
+
 label rtf_watchwoman_script:
     show screen rtf_watchwoman_scene_1(blur_out) with usual_transition
+    play music rtf_watchwoman_music
     speech.thought "Ну, кажется, есть ещё одна проблема..."
     Character("Вахтёрша", kind = speech.generic) "{sc=3}Молодой человек! Пропуск мне кто показывать будет?{/sc}"
     menu:
@@ -142,6 +154,9 @@ screen rtf_classroom_scene_2:
     add "bg_rtf_auditorium.jpg" fit "fill"
     zorder -10
 
+define rtf_classroom_music = "Toby Fox — Quiet Water.mp3"
+define rtf_classroom_sound = "Quiet noise.mp3"
+
 label rtf_classroom_script:
     speech.thought "..."
     speech.thought "..."
@@ -150,6 +165,8 @@ label rtf_classroom_script:
     speech.thought "Она оказалась на третьем этаже. Сколько времени я искал? Даже не спрашивайте."
     hide screen rtf_classroom_scene_1 with usual_transition
     show screen rtf_classroom_scene_2 with usual_transition
+    play music rtf_classroom_music
+    play sound rtf_classroom_sound loop
     menu:
         speech.thought "Куда мне сесть?"
         "Галёрка — поближе к обществу!":
@@ -256,19 +273,40 @@ label gallery_dialogue_script:
     speech.main "Попытаюсь."
     show screen portrait_main_undressed_sad(motion.unfocus(.3))
     show screen portrait_viktoriya_undressed_happy(motion.focus(.7))
-    Character("???", kind = speech.viktoriya) "Ты прям вообще печальный, может выпьем кофе после пары? Он должен взбодрить."
-    show screen portrait_viktoriya_undressed_happy(motion.unfocus(.7))
+    menu:
+        Character("???", kind = speech.viktoriya) "Ты прям вообще печальный, хочешь анекдот?"
+        "Валяй":
+            show screen portrait_main_undressed_sad(motion.unfocus(.3))
+            show screen portrait_viktoriya_undressed_happy(motion.focus(.7))
+            Character("???", kind = speech.viktoriya) "Когда искусственный интеллект встанет в один ряд с человеческим, можно ли будет называть его “железяка хренова”, или это будет неполиткорректно?"
+            Character("???", kind = speech.viktoriya) "..." 
+            show screen portrait_viktoriya_undressed_happy(motion.unfocus(.7))
+            speech.thought "Я предпочёл промолчать."
+            hide screen portrait_viktoriya_undressed_happy 
+            show screen portrait_viktoriya_undressed_normal(motion.move(.7)) 
+            show screen portrait_viktoriya_undressed_normal(motion.focus(.7)) 
+            Character("???", kind = speech.viktoriya) "Ладно, забудь."
+            Character("???", kind = speech.viktoriya) "Тогда может хоть кофе выпьем после физики?"
+        "Мы же на паре...":
+            show screen portrait_main_undressed_sad(motion.unfocus(.3))
+            hide screen portrait_viktoriya_undressed_happy 
+            show screen portrait_viktoriya_undressed_normal(motion.move(.7)) 
+            show screen portrait_viktoriya_undressed_normal(motion.focus(.7))
+            Character("???", kind = speech.viktoriya) "Тогда может хоть кофе выпьем после физики?"
+    show screen portrait_viktoriya_undressed_normal(motion.unfocus(.7))
     show screen portrait_main_undressed_sad(motion.focus(.3))
     speech.main "Мне нужно будет найти кабинет английского, а это, скорее всего, займет весь перерыв."
     show screen portrait_main_undressed_sad(motion.unfocus(.3))
-    show screen portrait_viktoriya_undressed_happy(motion.focus(.7))
+    show screen portrait_viktoriya_undressed_normal(motion.focus(.7))
     Character("???", kind = speech.viktoriya) "Хочешь, помогу?"
-    show screen portrait_viktoriya_undressed_happy(motion.unfocus(.7))
+    show screen portrait_viktoriya_undressed_normal(motion.unfocus(.7))
     hide screen portrait_main_undressed_sad 
     show screen portrait_main_undressed_normal(motion.move(.3)) 
     show screen portrait_main_undressed_normal(motion.focus(.3))
     speech.main "Я только за."
     show screen portrait_main_undressed_normal(motion.unfocus(.3))
+    hide screen portrait_viktoriya_undressed_normal 
+    show screen portrait_viktoriya_undressed_happy(motion.move(.7)) 
     show screen portrait_viktoriya_undressed_happy(motion.focus(.7))
     Character("???", kind = speech.viktoriya) "Отлично! Осталось пережить пару и не уснуть."
     show screen gallery_dialogue_scene_2(blur_in)
@@ -281,6 +319,8 @@ label gallery_dialogue_script:
     show screen gallery_dialogue_scene_4 with usual_transition
     speech.main "Вот блин."
     hide screen gallery_dialogue_scene_4 with usual_transition
+    stop music
+    stop sound
     return
 
 
@@ -313,7 +353,7 @@ label coffee_script:
     Character("???", kind = speech.viktoriya) "Попробуешь угадать мое имя? Знаешь такую фишку, на некоторых смотришь и думаешь: “Во-о-от, это точно идёт Настя”."
     show screen portrait_viktoriya_undressed_normal(motion.unfocus(.3))
     show screen portrait_main_undressed_normal(motion.focus(.7))
-    speech.main "Ну..."
+    speech.main "Да ну, бред."
     show screen portrait_main_undressed_normal(motion.unfocus(.7))
     show screen portrait_viktoriya_undressed_normal(motion.focus(.3))
     Character("???", kind = speech.viktoriya) "Ты кстати похож на [player_name]."
@@ -449,7 +489,7 @@ label english_classroom_script:
     speech.viktoriya "Репетиции каждый день, все дела."
     show screen portrait_viktoriya_undressed_normal(motion.unfocus(.3))
     show screen portrait_main_undressed_normal(motion.focus(.7))
-    speech.main "Не люблю подобные мероприятия."
+    speech.main "Какой же бред."
     show screen portrait_main_undressed_normal(motion.unfocus(.7))
     show screen portrait_viktoriya_undressed_normal(motion.focus(.3))
     speech.viktoriya "Я тоже не вижу в них смысла. Столько сил и времени уходит."
@@ -602,6 +642,8 @@ label first_desk_script:
     speech.kseniya "Да, в одной группе. Тогда вместе и найдем аудиторию."
     speech.egor "Везёт вам. А мне на математику идти."
     hide screen first_desk_scene_2 with usual_transition
+    stop music
+    stop sound
     return
 
 

@@ -1,7 +1,7 @@
 label scene1_script:
-    call desk_interactive_script from _call_desk_interactive_script
-    call desk_flashback_script from _call_desk_flashback_script
-    call room_packing_script from _call_room_packing_script
+    call desk_interactive_script
+    call desk_flashback_script 
+    call room_packing_script
     return
 
 
@@ -41,7 +41,6 @@ label ask_ai_script:
         $ asked_ai = True
         speech.main "Слушай, Алиса! Расскажи о себе!"
         speech.alice "Я — голосовой помощник, который может найти ответ на любой вопрос."
-        $ renpy.notify("На ссылки в репликах можно и нужно нажимать, они помогут лучше понять историю.")
         speech.thought "А это {a=https://programs.edu.urfu.ru/ru/10591/}{i}искусственный интеллект{/i}{/a}. Удивительная штука, все так говорят. Меня она почему-то особо не удивляет."
         $ asking_smth = False
     return
@@ -50,8 +49,11 @@ label ask_hf_script:
     if (not asked_hf) and (not asking_smth):
         $ asking_smth = True
         $ asked_hf = True
-        speech.thought "Это мои наушники, я люблю слушать {a=https://youtu.be/xm3YgoEiEDc?autoplay=1}{i}музыку{/i}{/a}."
+        speech.thought "Это мои наушники, я люблю слушать {a=https://youtu.be/xm3YgoEiEDc?autoplay=1}{i}музыку{/i}{/a}. Чаще рок, иногда рэп... Поп тоже слушаю. Егор Крид, но редко..."
+        speech.thought "..."
+        speech.thought "Ладно, неважно."
         speech.thought "Папа хочет, чтобы я был радистом. Но пока что от {a=https://priem-rtf.urfu.ru/ru/baccalaureate/electronics-radio-engineering-and-communication-systems/radio-engineering/}{i}радиотехники{/i}{/a} я далек: максимум слушаю радио с утра и знаю, где памятник Попова."
+        speech.thought "Проспект Ленина 39, город Екатеринбург. Видите? Знаю."
         $ asking_smth = False
     return
 
@@ -59,7 +61,7 @@ label ask_lamp_script:
     if (not asked_lamp) and (not asking_smth):
         $ asking_smth = True
         $ asked_lamp = True
-        speech.thought "Учение свет. Неучение тьма. Грустно, что, зная пословицу наизусть, я не знаю её автора."
+        speech.thought "Учение свет. Неучение тьма. Грустно, что, зная пословицу наизусть, я не знаю её автора. Надо загуглить."
         $ asking_smth = False
     return
 
@@ -69,6 +71,8 @@ label ask_water_script:
         $ asked_water = True
         speech.thought "Монооксид дигидрогена, гидроксид водорода, гидроксильная кислота, оксидан, дигидрид кислорода."
         speech.thought "Было бы максимально смешно, если бы в названии было аж два о."
+        speech.thought "..."
+        speech.thought "Мне смешно, а вам... не знаю."
         $ asking_smth = False
     return
 
@@ -76,8 +80,9 @@ label ask_pc_script:
     if (not asked_pc) and (not asking_smth):
         $ asking_smth = True
         $ asked_pc = True
-        speech.thought "Это мой компьютер. Урвал на популярном маркетплейсе почти задаром. Ничего необычного."
+        speech.thought "Это мой компьютер, вы и сами видите. Урвал на популярном маркетплейсе почти задаром. Ничего необычного."
         speech.thought "Хотя даже такая простая вещь может иметь связь с моей будущей профессией. Вдруг я стану {a=https://programs.edu.urfu.ru/ru/10588/}{i}системным инженером{/i}{/a}?"
+        speech.thought "Может и не стану."
         $ asking_smth = False
     return
 
@@ -86,11 +91,17 @@ label ask_all_script:
         $ asked_all = True
     return
 
+define desk_interactive_music = "Toby Fox — Home.mp3"
+
 label desk_interactive_script:
     show screen desk_interactive_scene with usual_transition
+    play music desk_interactive_music
+    $ renpy.notify("На ссылки в репликах можно и нужно нажимать, они помогут лучше понять историю.")
     speech.thought "Интересно, что практически всё вокруг нас связано с айти."
+    speech.thought "Ну, мне интересно... как вам, не знаю."
     while (not asked_ai) or (not asked_hf) or (not asked_lamp) or (not asked_water) or (not asked_pc):
         ""
+    speech.thought "Да... Когда я просыпаюсь в 6 утра, то часто болтаю сам с собой."
     speech.thought "Довольно бездельничать, надо собираться. Сперва узнаю расписание, вроде сохранял на компьютере."
     while not asked_all:
         ""
@@ -122,6 +133,10 @@ screen desk_flashback_scene_3:
     add "bg_desk_mch.jpg" fit "fill"
     zorder -10
 
+define desk_flashback_sound = "Sad Trombone.mp3"
+define desk_flashback_music = "Toby Fox — Home (Music Box).mp3"
+
+
 label desk_flashback_script:
     show screen desk_flashback_scene_1 with usual_transition
     speech.thought "Ну и выбрал я себе расписание в {color=#FF00FF}модеусе{/color}. Хотя как выбрал..."
@@ -130,9 +145,11 @@ label desk_flashback_script:
     ""
     hide screen text_scene with usual_transition
     show screen desk_flashback_scene_2 with usual_transition
-    speech.vanya "Десять-ноль-ноль! Заходим, быстрее!"
+    speech.vanya "Десять-ноль-ноль, чувак!"
+    speech.vanya "Заходим, быстрее!"
+    speech.vanya "Бырее, мы ща не успеем нифига!"
     speech.narrator "*Ваня отчаянно клацает мышкой*"
-    speech.vanya "Блин, не успел. А ты там как, ..."
+    speech.vanya "Да святая моя пятка, етить твою малину... Не успел. А ты там как, ..."
     while True:
         $ player_name = renpy.input("{i}Придумайте имя нашему герою! {size=-10}(не героине, к сожалению){/size}{/i}")
         $ player_name = player_name.strip()
@@ -141,15 +158,20 @@ label desk_flashback_script:
         else:
             jump desk_name_input_scene_break
     label desk_name_input_scene_break:
-    speech.vanya "Блин, не успел. А ты там как, [player_name]?"
+    speech.vanya "Да святая моя пятка, етить твою малину... Не успел. А ты там как, [player_name]?"
+    stop music
+    play sound desk_flashback_sound
     $ chose_subjects = True
     speech.main "Всё прекрасно..."
+    speech.vanya "Чувак, мы влипли."
     hide screen desk_flashback_scene_2 with usual_transition
     show screen desk_flashback_scene_1 with usual_transition
     speech.thought "Мда."
     hide screen desk_flashback_scene_1 with usual_transition
     show screen desk_flashback_scene_3 with usual_transition
-    speech.main "Ничего страшного. От четырех пар в понедельник еще никто не умирал."
+    play music desk_flashback_music
+    speech.main "Влипли... Ничего страшного. От четырех пар в понедельник еще никто не умирал."
+    speech.main "Источник информации: живые второкурсники."
     hide screen desk_flashback_scene_3 with usual_transition
     return
 

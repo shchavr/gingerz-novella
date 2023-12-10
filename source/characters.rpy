@@ -136,6 +136,75 @@ screen portrait_valeriya_dressed_sad(how):
 
 
 
+transform motion.robust(position, focused, appear):
+    ease (0. if appear else .2) ypos (1. if focused else 1.05) xpos position
+
+screen portrait_main(clothing, emotion, position, focused, appear):
+    add "ch_main_[clothing]_[emotion].png" xanchor .5 yanchor 1. at motion.robust(position, focused, appear)
+    zorder -5
+
+init python:
+    class portrait:
+        def __init__(self, name):
+            self.name = name
+        def appear(self, clothing, emotion, position, focused):
+            self.clothing, self.emotion, self.position, self.focused = clothing, emotion, position, focused
+            renpy.transition(usual_transition)
+            renpy.show_screen(self.name, self.clothing, self.emotion, self.position, self.focused, True)
+        def morph(self, clothing, emotion, position, focused):
+            if clothing != None: self.clothing = clothing
+            if emotion != None: self.emotion = emotion
+            if position != None: self.position = position
+            if focused != None: self.focused = focused
+            renpy.show_screen(self.name, self.clothing, self.emotion, self.position, self.focused, False)
+        def disappear(self):
+            renpy.transition(usual_transition)
+            renpy.hide_screen(self.name)
+
+        main = valeriya = viktoriya = kseniya = None
+    portrait.main = portrait("portrait_main")
+    portrait.valeriya = portrait("portrait_valeriya")
+    portrait.viktoriya = portrait("portrait_viktoriya")
+    portrait.kseniya = portrait("portrait_kseniya")
+
+    # class portrait_main:
+    #     clothing = "undressed"
+    #     emotion = "normal"
+    #     position = .5
+    #     focused = False
+    #     @staticmethod
+    #     def appear(clothing, emotion, position, focused):
+    #         portrait_main.clothing, portrait_main.emotion, portrait_main.position, portrait_main.focused = clothing, emotion, position, focused
+    #         renpy.transition(usual_transition)
+    #         renpy.show_screen("portrait_main", portrait_main.clothing, portrait_main.emotion, portrait_main.position, portrait_main.focused, True)
+    #     @staticmethod
+    #     def morph(clothing, emotion, position, focused):
+    #         if clothing != None: portrait_main.clothing = clothing
+    #         if emotion != None: portrait_main.emotion = emotion
+    #         if position != None: portrait_main.position = position
+    #         if focused != None: portrait_main.focused = focused
+    #         renpy.show_screen("portrait_main", portrait_main.clothing, portrait_main.emotion, portrait_main.position, portrait_main.focused, False)
+    #     @staticmethod
+    #     def disappear():
+    #         renpy.transition(usual_transition)
+    #         renpy.hide_screen("portrait_main")
+
+screen portrait_valeriya(clothing, emotion, position, focused, appear):
+    add "ch_valeriya_[clothing]_[emotion].png" xanchor .5 yanchor 1. at motion.robust(position, focused, appear)
+    zorder -5
+
+screen portrait_viktoriya(clothing, emotion, position, focused, appear):
+    add "ch_viktoriya_[clothing]_[emotion].png" xanchor .5 yanchor 1. at motion.robust(position, focused, appear)
+    zorder -5
+
+screen portrait_kseniya(clothing, emotion, position, focused, appear):
+    add "ch_kseniya_[clothing]_[emotion].png" xanchor .5 yanchor 1. at motion.robust(position, focused, appear)
+    zorder -5
+
+
+
+
+
 
 
 
@@ -158,13 +227,6 @@ transform blur_in:
 transform motion.move(start, delta = 0., period = 0.):
     xpos start
     ease period xpos (start + delta)
-
-transform motion.shake(start, amplitude, period):
-    linear period xpos start
-    linear period xpos (start + amplitude)
-    linear period xpos start
-    linear period xpos (start - amplitude)
-    repeat
 
 transform motion.focus(start):
     ypos 1.05 xpos start

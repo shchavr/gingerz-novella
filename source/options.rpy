@@ -11,10 +11,13 @@
 define config.name = "proj1"
 define config.has_autosave = True
 define config.has_music = True
-define config.has_sound = False
+define config.has_sound = True
 define config.has_voice = False
 define config.has_sync = False
 define config.allow_skipping = False
+
+define config.default_music_volume = 0.5
+define config.default_sfx_volume = 0.5
 
 define config.keymap['self_voicing'] = []
 define config.keymap['clipboard_voicing'] = []

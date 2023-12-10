@@ -381,9 +381,9 @@ screen main_menu():
                 text "[config.version]":
                     style "main_menu_version"
 
-    vbox xpos 1.2 ypos .1 xanchor 1. yanchor 0.:
-        text "{color=[gui.accent_color]}{size=+80}Название{/size}{/color}" xanchor 1.
-        text "{color=[gui.accent_color]}от команды Рекурсивные Пряники{/color}" xanchor 1.
+    vbox xpos 1.25 ypos .08 xanchor 1. yanchor 0.:
+        text "{color=[gui.accent_color]}{size=+120}{b}Gingers{/b}{/size}{/color}" xanchor 1.
+        text "{color=[gui.accent_color]}{size=+0}от команды Рекурсивные Пряники{/size}{/color}" xanchor 1.
 
 
 style main_menu_frame is empty
@@ -787,18 +787,17 @@ screen preferences():
                         hbox:
                             bar value Preference("music volume")
 
+                    if config.has_sound:
+                        label _("Громкость звуков")
+
+                        hbox:
+                            bar value Preference("sound volume")
+
+                                #if config.sample_sound:
+                                #    textbutton _("Test") action Play("sound", config.sample_sound)
+
+
                     showif False:
-                        if config.has_sound:
-
-                            label _("Sound Volume")
-
-                            hbox:
-                                bar value Preference("sound volume")
-
-                                if config.sample_sound:
-                                    textbutton _("Test") action Play("sound", config.sample_sound)
-
-
                         if config.has_voice:
                             label _("Voice Volume")
 

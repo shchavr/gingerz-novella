@@ -130,6 +130,9 @@ define config.window_icon = "gui/window_icon.png"
 ##
 ## This section controls how Ren'Py turns your project into distribution files.
 
+init -1 python:
+    renpy.music.register_channel("ambient", "sfx")
+
 init python:
     build.classify('**~', None)
     build.classify('**.bak', None)

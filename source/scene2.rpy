@@ -107,28 +107,28 @@ label rtf_watchwoman_script:
         speech.thought "Что ответить..?"
         "Нагрубить и сказать, что уже показывал":
             $ tmp = "провалена"
-            show screen portrait_main_dressed_normal(motion.move(.8)) with usual_transition
-            show screen portrait_main_dressed_normal(motion.focus(.8))
+            $ portrait.main.appear("dressed", "normal", .8, True)
             speech.main "Я это уже сделал, женщина. Внимательней нужно смотреть, или у вас со зрением проблемы?"
-            show screen portrait_main_dressed_normal(motion.unfocus(.8))
+            $ portrait.main.morph(None, None, None, False)
             Character("Вахтёрша", kind = speech.generic) "{sc=5}{color=#FFDDDD}Показывать надо нормально, а ещё язык за зубами держать!{/color}{/sc}"
             Character("Вахтёрша", kind = speech.generic) "{sc=10}{color=#FFBBBB}Я тут не первый год работаю, а вы вот что себе позволяете!!!{/color}{/sc}"
-            hide screen portrait_main_dressed_normal
-            show screen portrait_main_dressed_surprised(motion.move(.8))
+            $ portrait.main.morph(None, "surprised", None, None)
             Character("Вахтёрша", kind = speech.generic) "{sc=20}{color=#FF9999}А вы знаете что вообще-то...{/color}{/sc}"
+            $ portrait.main.morph(None, "sad", None, None)
             Character("Вахтёрша", kind = speech.generic) "{sc=50}{color=#FF7777}Мы, пОжИлыЕ лЮди, из-За таКиХ хамОв, как Вы, выНУждЕны пО ТРи смЕНы паХаТь...{/color}{/sc}"
             $ renpy.notify("За ссору с вахтершей вы получили баллов: 0/10. Всего баллов: " + str(player_score) + ".")
             speech.thought "Придётся бежать с поля боя."
-            hide screen portrait_main_dressed_surprised with usual_transition
+            $ portrait.main.disappear()
         "Промолчать и показать пропуск еще раз":
-            $ tmp = "пройдена"
+            $ tmp = "пройдена. “Вас наполняет решимость”."
             $ player_score += 10
             $ renpy.notify("За терпение вы получили баллов: 10/10. Всего баллов: " + str(player_score) + ".")
             Character("Вахтёрша", kind = speech.generic) "Вот так и в следующий раз будьте добры."
     show screen rtf_watchwoman_scene_1(blur_in)
     hide screen rtf_watchwoman_scene_1 with usual_transition
     show screen rtf_watchwoman_scene_2 with usual_transition
-    speech.thought "Битва с боссом [tmp]. А теперь найти бы аудиторию... Первая — физика."
+    speech.thought "Битва с боссом [tmp]."
+    speech.thought "А теперь найти бы аудиторию... Первая — физика."
     hide screen rtf_watchwoman_scene_2 with usual_transition
     return
 
@@ -155,7 +155,7 @@ screen rtf_classroom_scene_2:
     zorder -10
 
 define rtf_classroom_music = "Toby Fox — Quiet Water.mp3"
-define rtf_classroom_sound = "Quiet noise.mp3"
+define rtf_classroom_ambient = "Quiet noise.mp3"
 
 label rtf_classroom_script:
     speech.thought "..."
@@ -166,7 +166,7 @@ label rtf_classroom_script:
     hide screen rtf_classroom_scene_1 with usual_transition
     show screen rtf_classroom_scene_2 with usual_transition
     play music rtf_classroom_music
-    play sound rtf_classroom_sound loop
+    play ambient rtf_classroom_ambient loop
     menu:
         speech.thought "Куда мне сесть?"
         "Галёрка — поближе к обществу!":
@@ -210,108 +210,103 @@ label gallery_dialogue_script:
     speech.thought "Я решил сесть подальше. Первый день всё-таки, много стресса, а нервые клетки мне ещё на сессии будут нужны."
     hide screen gallery_dialogue_scene_1 with usual_transition
     show screen gallery_dialogue_scene_2(blur_out) with usual_transition
-    show screen portrait_main_dressed_normal(motion.move(.3)) with usual_transition
-    show screen portrait_viktoriya_undressed_normal(motion.move(.7)) with usual_transition
-    show screen portrait_viktoriya_undressed_normal(motion.focus(.7))
+    $ portrait.main.appear("dressed", "normal", .3, False)
+    $ portrait.viktoriya.appear("undressed", "normal", .7, True)
     Character("???", kind = speech.viktoriya) "Эй-эй-эй! Куртку нужно сдавать в гардеро-о-об!"
-    show screen portrait_viktoriya_undressed_normal(motion.unfocus(.7))
-    show screen portrait_main_dressed_normal(motion.focus(.3))
+    $ portrait.viktoriya.morph(None, None, None, False)
+    $ portrait.main.morph(None, None, None, True)
     speech.main "У меня {a=https://vk.com/wall-133242721_51289}петельки нет{/a}."
-    hide screen portrait_main_dressed_normal with usual_transition
-    show screen portrait_main_undressed_normal(motion.move(.3)) with usual_transition
-    show screen portrait_viktoriya_undressed_normal(motion.focus(.7))
+    $ portrait.main.disappear()
+    $ portrait.main.appear("undressed", "normal", .3, False)
+    $ portrait.viktoriya.morph(None, None, None, True)
     Character("???", kind = speech.viktoriya) "Эм... Ладно."
-    show screen portrait_viktoriya_undressed_normal(motion.unfocus(.7))
-    show screen portrait_main_undressed_normal(motion.focus(.3))
+    $ portrait.viktoriya.morph(None, None, None, False)
+    $ portrait.main.morph(None, None, None, True)
     speech.main "А ещё хорошего настроения. Там на входе..."
-    show screen portrait_main_undressed_normal(motion.unfocus(.3))
-    show screen portrait_viktoriya_undressed_normal(motion.focus(.7))
-    Character("???", kind = speech.viktoriya) "Поругался из-за студика?"
-    show screen portrait_viktoriya_undressed_normal(motion.unfocus(.7))
-    show screen portrait_main_undressed_normal(motion.focus(.3))
+    $ portrait.main.morph(None, None, None, False)
+    $ portrait.viktoriya.morph(None, None, None, True)
     menu:
-        speech.thought "Что ей ответить?"
+        Character("???", kind = speech.viktoriya) "Поругался из-за студика?"
         "Переборол себя и показал ещё раз":
-            show screen portrait_main_undressed_normal(motion.unfocus(.3))
-            show screen portrait_viktoriya_undressed_normal(motion.focus(.7))
+            $ portrait.viktoriya.morph(None, None, None, False)
+            $ portrait.main.morph(None, None, None, True)
+            speech.main "Пришлось показать дважды."
+            $ portrait.main.morph(None, None, None, False)
+            $ portrait.viktoriya.morph(None, None, None, True)
             Character("???", kind = speech.viktoriya) "Так и надо было."
         "Да, только толку мало. Я ей слово, а она мне...":
-            show screen portrait_main_undressed_normal(motion.unfocus(.3))
-            show screen portrait_viktoriya_undressed_normal(motion.focus(.7))
+            $ portrait.viktoriya.morph(None, None, None, False)
+            $ portrait.main.morph(None, "sad", None, True)
+            speech.main "Да... обменялись любезностями, так сказать."
+            $ portrait.main.morph(None, None, None, False)
+            $ portrait.viktoriya.morph(None, "happy", None, True)
             Character("???", kind = speech.viktoriya) "Бывает. Привыкнешь."
 
-    show screen portrait_viktoriya_undressed_normal(motion.unfocus(.7))
-    show screen portrait_main_undressed_normal(motion.focus(.3))
+    $ portrait.viktoriya.morph(None, "normal", None, False)
+    $ portrait.main.morph(None, "normal", None, True)
     speech.main "Здесь всегда так с утра? Настроения не было, а сейчас ещё хуже. Да и физику я не понимаю."
-    show screen portrait_main_undressed_normal(motion.unfocus(.3))
-    show screen portrait_viktoriya_undressed_normal(motion.focus(.7))
+    $ portrait.main.morph(None, None, None, False)
+    $ portrait.viktoriya.morph(None, None, None, True)
     Character("???", kind = speech.viktoriya) "Да кто её понимает?"
-    show screen portrait_viktoriya_undressed_normal(motion.unfocus(.7))
-    hide screen portrait_main_undressed_normal
-    show screen portrait_main_undressed_sad(motion.move(.3))
-    show screen portrait_main_undressed_sad(motion.focus(.3))
+    $ portrait.viktoriya.morph(None, None, None, False)
+    $ portrait.main.morph(None, "sad", None, True)
     speech.main "Вдруг у меня специальность будет с ней связана..."
-    show screen portrait_main_undressed_sad(motion.unfocus(.3))
-    show screen portrait_viktoriya_undressed_normal(motion.focus(.7))
+    $ portrait.main.morph(None, None, None, False)
+    $ portrait.viktoriya.morph(None, None, None, True)
     Character("???", kind = speech.viktoriya) "Сочувствую. Ты будущий инженер?"
-    show screen portrait_viktoriya_undressed_normal(motion.unfocus(.7))
-    show screen portrait_main_undressed_sad(motion.focus(.3))
+    $ portrait.viktoriya.morph(None, None, None, False)
+    $ portrait.main.morph(None, None, None, True)
     speech.main "Не знаю, будущий бездарь. Меня тянет ко всему по чуть-чуть. Ещё не определился. Знаю, что технарь, и всё."
-    show screen portrait_main_undressed_sad(motion.unfocus(.3))
-    show screen portrait_viktoriya_undressed_normal(motion.focus(.7))
+    $ portrait.main.morph(None, None, None, False)
+    $ portrait.viktoriya.morph(None, None, None, True)
     Character("???", kind = speech.viktoriya) "Ещё есть время! А в ИРИТ-РТФ индивиду..."
-    show screen portrait_viktoriya_undressed_normal(motion.unfocus(.7))
-    show screen portrait_main_undressed_sad(motion.focus(.3))
+    $ portrait.viktoriya.morph(None, None, None, False)
+    $ portrait.main.morph(None, None, None, True)
     speech.main "Прекрати говорить рекламными лозунгами, пожалуйста."
-    show screen portrait_main_undressed_sad(motion.unfocus(.3))
-    hide screen portrait_viktoriya_undressed_normal 
-    show screen portrait_viktoriya_undressed_happy(motion.move(.7)) 
-    show screen portrait_viktoriya_undressed_happy(motion.focus(.7))
+    $ portrait.main.morph(None, None, None, False)
+    $ portrait.viktoriya.morph(None, "happy", None, True)
     Character("???", kind = speech.viktoriya) "Шучу, шучу. Но мне кажется, что здесь правда можно найти себя. По крайней мере, стоит попытаться."
-    show screen portrait_viktoriya_undressed_happy(motion.unfocus(.7))
-    show screen portrait_main_undressed_sad(motion.focus(.3))
+    $ portrait.viktoriya.morph(None, None, None, False)
+    $ portrait.main.morph(None, None, None, True)
     speech.main "Попытаюсь."
-    show screen portrait_main_undressed_sad(motion.unfocus(.3))
-    show screen portrait_viktoriya_undressed_happy(motion.focus(.7))
+    $ portrait.main.morph(None, None, None, False)
+    $ portrait.viktoriya.morph(None, "sad", None, True)
     menu:
         Character("???", kind = speech.viktoriya) "Ты прям вообще печальный, хочешь анекдот?"
-        "Валяй":
-            show screen portrait_main_undressed_sad(motion.unfocus(.3))
-            show screen portrait_viktoriya_undressed_happy(motion.focus(.7))
+        "Давай":
+            $ portrait.viktoriya.morph(None, None, None, False)
+            $ portrait.main.morph(None, None, None, True)
+            speech.main "Валяй."
+            $ portrait.main.morph(None, None, None, False)
+            $ portrait.viktoriya.morph(None, "happy", None, True)
             Character("???", kind = speech.viktoriya) "Когда искусственный интеллект встанет в один ряд с человеческим, можно ли будет называть его “железяка хренова”, или это будет неполиткорректно?"
-            Character("???", kind = speech.viktoriya) "..." 
-            show screen portrait_viktoriya_undressed_happy(motion.unfocus(.7))
+            $ portrait.viktoriya.morph(None, None, None, False)
             speech.thought "Я предпочёл промолчать."
-            hide screen portrait_viktoriya_undressed_happy 
-            show screen portrait_viktoriya_undressed_normal(motion.move(.7)) 
-            show screen portrait_viktoriya_undressed_normal(motion.focus(.7)) 
+            $ portrait.viktoriya.morph(None, "normal", None, True) 
             Character("???", kind = speech.viktoriya) "Ладно, забудь."
-            Character("???", kind = speech.viktoriya) "Тогда может хоть кофе выпьем после физики?"
         "Мы же на паре...":
-            show screen portrait_main_undressed_sad(motion.unfocus(.3))
-            hide screen portrait_viktoriya_undressed_happy 
-            show screen portrait_viktoriya_undressed_normal(motion.move(.7)) 
-            show screen portrait_viktoriya_undressed_normal(motion.focus(.7))
-            Character("???", kind = speech.viktoriya) "Тогда может хоть кофе выпьем после физики?"
-    show screen portrait_viktoriya_undressed_normal(motion.unfocus(.7))
-    show screen portrait_main_undressed_sad(motion.focus(.3))
+            $ portrait.viktoriya.morph(None, None, None, False)
+            $ portrait.main.morph(None, None, None, True)
+            speech.main "Не хватало мне ещё хохотать на всю аудиторию."
+            $ portrait.main.morph(None, None, None, False)
+            $ portrait.viktoriya.morph(None, "normal", None, True)
+    
+    Character("???", kind = speech.viktoriya) "Тогда может хоть кофе выпьем после физики?"
+    $ portrait.viktoriya.morph(None, None, None, False)
+    $ portrait.main.morph(None, None, None, True)
     speech.main "Мне нужно будет найти кабинет английского, а это, скорее всего, займет весь перерыв."
-    show screen portrait_main_undressed_sad(motion.unfocus(.3))
-    show screen portrait_viktoriya_undressed_normal(motion.focus(.7))
+    $ portrait.main.morph(None, None, None, False)
+    $ portrait.viktoriya.morph(None, None, None, True)
     Character("???", kind = speech.viktoriya) "Хочешь, помогу?"
-    show screen portrait_viktoriya_undressed_normal(motion.unfocus(.7))
-    hide screen portrait_main_undressed_sad 
-    show screen portrait_main_undressed_normal(motion.move(.3)) 
-    show screen portrait_main_undressed_normal(motion.focus(.3))
+    $ portrait.viktoriya.morph(None, None, None, False)
+    $ portrait.main.morph(None, "normal", None, True)
     speech.main "Я только за."
-    show screen portrait_main_undressed_normal(motion.unfocus(.3))
-    hide screen portrait_viktoriya_undressed_normal 
-    show screen portrait_viktoriya_undressed_happy(motion.move(.7)) 
-    show screen portrait_viktoriya_undressed_happy(motion.focus(.7))
+    $ portrait.main.morph(None, None, None, False)
+    $ portrait.viktoriya.morph(None, "happy", None, True)
     Character("???", kind = speech.viktoriya) "Отлично! Осталось пережить пару и не уснуть."
+    $ portrait.viktoriya.disappear()
+    $ portrait.main.disappear()
     show screen gallery_dialogue_scene_2(blur_in)
-    hide screen portrait_viktoriya_undressed_happy with usual_transition
-    hide screen portrait_main_undressed_normal with usual_transition
     hide screen gallery_dialogue_scene_2 with usual_transition
     show screen gallery_dialogue_scene_3 with usual_transition
     Character("Преподаватель", kind = speech.generic) "Галёрка! У нас тут баллистика! Разговоры прекращаем."
@@ -320,7 +315,6 @@ label gallery_dialogue_script:
     speech.main "Вот блин."
     hide screen gallery_dialogue_scene_4 with usual_transition
     stop music
-    stop sound
     return
 
 
@@ -340,37 +334,35 @@ screen coffee_script(how):
     add "bg_rtf_coffeeshop.jpg" fit "fill" at how
     zorder -10
 
+define coffee_music = "Toby Fox — Hotel.mp3"
+define coffee_sound = "Short Applause.mp3"
+
 label coffee_script:
     show screen coffee_script(None) with usual_transition
+    play music coffee_music
     speech.thought "Мучительно прошла физика, и мы отправились искать кабинет английского."
     show screen coffee_script(blur_out)
-    show screen portrait_viktoriya_undressed_normal(motion.move(.3)) with usual_transition
-    show screen portrait_main_undressed_normal(motion.move(.7)) with usual_transition
-    show screen portrait_main_undressed_normal(motion.focus(.7))
+    $ portrait.viktoriya.appear("undressed", "normal", .3, False)
+    $ portrait.main.appear("undressed", "normal", .7, True)
     speech.main "Так что ты там говорила?"
-    show screen portrait_main_undressed_normal(motion.unfocus(.7))
-    show screen portrait_viktoriya_undressed_normal(motion.focus(.3))
+    $ portrait.main.morph(None, None, None, False)
+    $ portrait.viktoriya.morph(None, None, None, True)
     Character("???", kind = speech.viktoriya) "Попробуешь угадать мое имя? Знаешь такую фишку, на некоторых смотришь и думаешь: “Во-о-от, это точно идёт Настя”."
-    show screen portrait_viktoriya_undressed_normal(motion.unfocus(.3))
-    show screen portrait_main_undressed_normal(motion.focus(.7))
+    $ portrait.viktoriya.morph(None, None, None, False)
+    $ portrait.main.morph(None, None, None, True)
     speech.main "Да ну, бред."
-    show screen portrait_main_undressed_normal(motion.unfocus(.7))
-    show screen portrait_viktoriya_undressed_normal(motion.focus(.3))
+    $ portrait.main.morph(None, None, None, False)
+    $ portrait.viktoriya.morph(None, None, None, True)
     Character("???", kind = speech.viktoriya) "Ты кстати похож на [player_name]."
-    show screen portrait_viktoriya_undressed_normal(motion.unfocus(.3))
-    hide screen portrait_main_undressed_normal
-    show screen portrait_main_undressed_surprised(motion.move(.7))
-    show screen portrait_main_undressed_surprised(motion.focus(.7))
+    $ portrait.viktoriya.morph(None, None, None, False)
+    $ portrait.main.morph(None, "surprised", None, True)
     speech.main "Офигеть! Как ты..."
-    show screen portrait_main_undressed_surprised(motion.unfocus(.7))
-    hide screen portrait_viktoriya_undressed_normal
-    show screen portrait_viktoriya_undressed_happy(motion.move(.3))
-    show screen portrait_viktoriya_undressed_happy(motion.focus(.3))
+    $ portrait.main.morph(None, None, None, False)
+    $ portrait.viktoriya.morph(None, "happy", None, True)
     Character("???", kind = speech.viktoriya) "Угадала?! Я же говорю! Теперь давай ты, даю тебе пять попыток."
-    show screen portrait_viktoriya_undressed_happy(motion.unfocus(.3))
-    hide screen portrait_main_undressed_surprised
-    show screen portrait_main_undressed_normal(motion.move(.7))
+    $ portrait.main.morph(None, "normal", None, None)
     while guess_tries < 5:
+        $ portrait.viktoriya.morph(None, None, None, False)
         menu:
             speech.thought "Как её зовут? Откуда я знаю!"
             "Ксюша" if not guess_tried_ksysha:
@@ -407,55 +399,43 @@ label coffee_script:
                 $ guess_tried_eva = True
                 $ guess_choice = "Ева"
                 jump guess_nope
-        label guess_nope:
+        label guess_nope:    
+        $ portrait.main.morph(None, None, None, True)
+        speech.main "[guess_choice]?"
+        $ portrait.main.morph(None, None, None, False)
         if guess_tries == 0:
-            hide screen portrait_viktoriya_undressed_happy
-            show screen portrait_viktoriya_undressed_normal(motion.move(.3))
-            show screen portrait_viktoriya_undressed_normal(motion.focus(.3))
+            $ portrait.viktoriya.morph(None, "normal", None, True)
             Character("???", kind = speech.viktoriya) "Ну не-е-ет."
-            show screen portrait_viktoriya_undressed_normal(motion.unfocus(.3))
         if guess_tries == 1:
-            show screen portrait_viktoriya_undressed_normal(motion.focus(.3))
+            $ portrait.viktoriya.morph(None, None, None, True)
             Character("???", kind = speech.viktoriya) "Крутите барабан дальше. Нет такой буквы!"
-            show screen portrait_viktoriya_undressed_normal(motion.unfocus(.3))
         if guess_tries == 2:
-            hide screen portrait_viktoriya_undressed_normal
-            show screen portrait_viktoriya_undressed_sad(motion.move(.3))
-            show screen portrait_viktoriya_undressed_sad(motion.focus(.3))
+            $ portrait.viktoriya.morph(None, "sad", None, True)
             Character("???", kind = speech.viktoriya) "Чего?! Да какая же я “[guess_choice]”?."
-            show screen portrait_viktoriya_undressed_sad(motion.unfocus(.3))
         if guess_tries == 3:
-            hide screen portrait_viktoriya_undressed_sad
-            show screen portrait_viktoriya_undressed_normal(motion.move(.3))
-            show screen portrait_viktoriya_undressed_normal(motion.focus(.3))
+            $ portrait.viktoriya.morph(None, "normal", None, True)
             Character("???", kind = speech.viktoriya) "Думай, думай, Марк!"
-            show screen portrait_viktoriya_undressed_normal(motion.unfocus(.3))
-            show screen portrait_main_undressed_normal(motion.focus(.7))
+            $ portrait.viktoriya.morph(None, None, None, False)
+            $ portrait.main.morph(None, None, None, True)
             speech.main "Чего? Какой ещё Марк?"
-            show screen portrait_main_undressed_normal(motion.unfocus(.7))
-            show screen portrait_viktoriya_undressed_normal(motion.focus(.3))
+            $ portrait.main.morph(None, None, None, False)
+            $ portrait.viktoriya.morph(None, None, None, True)
             Character("???", kind = speech.viktoriya) "Ну это отсылка на Непобедимого... Ой, забей. Не [guess_choice] я. Последняя попытка!"
-            show screen portrait_viktoriya_undressed_normal(motion.unfocus(.3))
         if guess_tries == 4:
-            show screen portrait_viktoriya_undressed_normal(motion.focus(.3))
+            $ portrait.viktoriya.morph(None, None, None, True)
             $ renpy.notify("Вы не смогли угадать имя. За игру вы получили баллов: 0/10. Всего баллов: " + str(player_score) + ".")
             speech.viktoriya "Всё было куда проще, я Вика."
-            show screen portrait_viktoriya_undressed_normal(motion.unfocus(.3))
-            hide screen portrait_viktoriya_undressed_normal with usual_transition
         $ guess_tries += 1
         if False:
             label guess_yes:
-            hide screen portrait_viktoriya_undressed_normal
-            hide screen portrait_viktoriya_undressed_sad
-            show screen portrait_viktoriya_undressed_happy(motion.move(.3))
-            show screen portrait_viktoriya_undressed_happy(motion.focus(.3))
             $ player_score += 10
+            $ portrait.viktoriya.morph(None, "happy", None, True)
             $ renpy.notify("Вы угадали! За игру вы получили баллов: 10/10. Всего баллов: " + str(player_score) + ".")
+            play sound coffee_sound
             speech.viktoriya "Бинго-о-о!"
-            show screen portrait_viktoriya_undressed_happy(motion.unfocus(.3))
-            hide screen portrait_viktoriya_undressed_happy with usual_transition
             $ guess_tries = 5
-    hide screen portrait_main_undressed_normal with usual_transition
+    $ portrait.main.disappear()
+    $ portrait.viktoriya.disappear()
     show screen coffee_script(blur_in)
     speech.thought "После этого мы долго болтали о всех мероприятиях, которые приготовил для нас вуз."
     hide screen coffee_script with usual_transition
@@ -482,98 +462,83 @@ screen english_classroom_scene_2(how):
 
 label english_classroom_script:
     show screen english_classroom_scene_1(blur_out) with usual_transition
-    show screen portrait_main_undressed_normal(motion.move(.7)) with usual_transition
-    show screen portrait_viktoriya_undressed_normal(motion.move(.3)) with usual_transition
-    show screen portrait_viktoriya_undressed_normal(motion.focus(.3))
+    $ portrait.main.appear("undressed", "normal", .7, False)
+    $ portrait.viktoriya.appear("undressed", "normal", .3, True)
     speech.viktoriya "{a=https://urfu.ru/ru/students/leisure/oso/tvorchestvo/tradicionnye-meroprijatija/debjut-pervokursnikov/}Дебют пекусов{/a}? Он будет, правда, ещё нескоро. Говорят, нужно приготовить номер на заданную тему и выступить на сцене."
     speech.viktoriya "Репетиции каждый день, все дела."
-    show screen portrait_viktoriya_undressed_normal(motion.unfocus(.3))
-    show screen portrait_main_undressed_normal(motion.focus(.7))
+    $ portrait.viktoriya.morph(None, None, None, False)
+    $ portrait.main.morph(None, None, None, True)
     speech.main "Какой же бред."
-    show screen portrait_main_undressed_normal(motion.unfocus(.7))
-    show screen portrait_viktoriya_undressed_normal(motion.focus(.3))
+    $ portrait.main.morph(None, None, None, False)
+    $ portrait.viktoriya.morph(None, None, None, True)
     speech.viktoriya "Я тоже не вижу в них смысла. Столько сил и времени уходит."
     speech.viktoriya "А знаешь, кто точно пойдет на дебют?"
-    show screen portrait_viktoriya_undressed_normal(motion.unfocus(.3))
-    show screen portrait_main_undressed_normal(motion.focus(.7))
+    $ portrait.viktoriya.morph(None, None, None, False)
+    $ portrait.main.morph(None, None, None, True)
     speech.main "Кто?"
-    show screen portrait_main_undressed_normal(motion.unfocus(.7))
-    hide screen portrait_viktoriya_undressed_normal
-    show screen portrait_viktoriya_undressed_happy(motion.move(.3))
-    show screen portrait_viktoriya_undressed_happy(motion.focus(.3))
+    $ portrait.main.morph(None, None, None, False)
+    $ portrait.viktoriya.morph(None, "happy", None, True)
     speech.viktoriya "Леро-о-у! Она всегда за любой движ."
-    show screen portrait_viktoriya_undressed_happy(motion.unfocus(.3))
-    show screen portrait_main_undressed_normal(motion.focus(.7))
+    $ portrait.viktoriya.morph(None, None, None, False)
+    $ portrait.main.morph(None, None, None, True)
     speech.main "Это..?"
-    show screen portrait_main_undressed_normal(motion.unfocus(.7))
-    hide screen portrait_viktoriya_undressed_happy
-    show screen portrait_viktoriya_undressed_normal(motion.move(.3))
-    show screen portrait_viktoriya_undressed_normal(motion.focus(.3))
+    $ portrait.main.morph(None, None, None, False)
+    $ portrait.viktoriya.morph(None, "normal", None, True)
     speech.viktoriya "Вы не знакомы? Странно, мне казалось, она добавила в друзья уже весь универ."
     speech.viktoriya "Может как-нибудь встретитесь. Смотри! Вроде бы, это кабинет английского."
-    show screen english_classroom_scene_1(blur_in)
-    show screen portrait_viktoriya_undressed_normal(motion.unfocus(.3))
-    hide screen portrait_viktoriya_undressed_normal with usual_transition
-    hide screen portrait_main_undressed_normal with usual_transition
+    $ portrait.main.disappear()
+    $ portrait.viktoriya.disappear()
     hide screen english_classroom_scene_1 with usual_transition
     
     show screen english_classroom_scene_2(blur_out) with usual_transition
-    show screen portrait_main_undressed_normal(motion.move(.7)) with usual_transition
-    show screen portrait_viktoriya_undressed_normal(motion.move(.3)) with usual_transition
-    show screen portrait_main_undressed_normal(motion.focus(.7))
+    $ portrait.main.appear("undressed", "normal", .7, True)
+    $ portrait.viktoriya.appear("undressed", "normal", .3, False)
     speech.main "И правда он. Так быстро нашли. Спасибо..?"
-    show screen portrait_main_undressed_normal(motion.unfocus(.7))
-    hide screen portrait_viktoriya_undressed_normal
-    show screen portrait_viktoriya_undressed_happy(motion.move(.3))
-    show screen portrait_viktoriya_undressed_happy(motion.focus(.3))
+    $ portrait.main.morph(None, None, None, False)
+    $ portrait.viktoriya.morph(None, "happy", None, True)
     speech.viktoriya "Рада помочь!"
-    show screen portrait_viktoriya_undressed_happy(motion.unfocus(.3))
-    show screen portrait_main_undressed_normal(motion.focus(.7))
+    $ portrait.viktoriya.morph(None, None, None, False)
+    $ portrait.main.morph(None, None, None, True)
     speech.main "Ты мельком сказала, что рисуешь..."
-    show screen portrait_main_undressed_normal(motion.unfocus(.7))
-    hide screen portrait_viktoriya_undressed_happy
-    show screen portrait_viktoriya_undressed_normal(motion.move(.3))
-    show screen portrait_viktoriya_undressed_normal(motion.focus(.3))
+    $ portrait.main.morph(None, None, None, False)
+    $ portrait.viktoriya.morph(None, "normal", None, True)
     speech.viktoriya "Чисто любительски, может как-нибудь покажу."
-    show screen portrait_viktoriya_undressed_normal(motion.unfocus(.3))
-    show screen portrait_main_undressed_normal(motion.focus(.7))
+    $ portrait.viktoriya.morph(None, None, None, False)
+    $ portrait.main.morph(None, None, None, True)
     speech.main "Не было желания стать дизайнером?"
-    show screen portrait_main_undressed_normal(motion.unfocus(.7))
-    hide screen portrait_viktoriya_undressed_normal
-    show screen portrait_viktoriya_undressed_happy(motion.move(.3))
-    show screen portrait_viktoriya_undressed_happy(motion.focus(.3))
+    $ portrait.main.morph(None, None, None, False)
+    $ portrait.viktoriya.morph(None, "happy", None, True)
     speech.viktoriya "Ха-ха-ха, какой из меня дизайнер! Хотя... Не знаю. Я еще не определилась."
+    $ portrait.viktoriya.morph(None, "normal", None, None)
     speech.viktoriya "В любом случае, время есть. Если кто-то оценит мои работы, то почему бы и нет."
-    show screen portrait_viktoriya_undressed_happy(motion.unfocus(.3))
-    show screen portrait_main_undressed_normal(motion.focus(.7))
+    $ portrait.viktoriya.morph(None, None, None, False)
+    $ portrait.main.morph(None, None, None, True)
     speech.main "У меня сосед по комнате увлекается всем этим. Как это называется? Живопись?"
     speech.main "В общем, тоже творческий человек. Я думаю, он может что-нибудь посоветовать."
-    show screen portrait_main_undressed_normal(motion.unfocus(.7))
-    hide screen portrait_viktoriya_undressed_happy
-    show screen portrait_viktoriya_undressed_normal(motion.move(.3))
-    show screen portrait_viktoriya_undressed_normal(motion.focus(.3))
+    $ portrait.main.morph(None, None, None, False)
+    $ portrait.viktoriya.morph(None, None, None, True)
     speech.viktoriya "Так ты общажный?"
-    show screen portrait_viktoriya_undressed_normal(motion.unfocus(.3))
-    show screen portrait_main_undressed_normal(motion.focus(.7))
+    $ portrait.viktoriya.morph(None, None, None, False)
+    $ portrait.main.morph(None, None, None, True)
     speech.main "Есть такое. В девятом живу. Ты из одиннадцатой?"
-    show screen portrait_main_undressed_normal(motion.unfocus(.7))
-    show screen portrait_viktoriya_undressed_normal(motion.focus(.3))
-    speech.viktoriya "Из Еката. Могу показать кучу мест, если захочешь. Очень много приезжих, так любопытно за вами наблюдать."
-    show screen portrait_viktoriya_undressed_normal(motion.unfocus(.3))
-    hide screen portrait_main_undressed_normal
-    show screen portrait_main_undressed_happy(motion.move(.7))
-    show screen portrait_main_undressed_happy(motion.focus(.7))
+    $ portrait.main.morph(None, None, None, False)
+    $ portrait.viktoriya.morph(None, "happy", None, True)
+    speech.viktoriya "Я местная. Могу показать кучу мест, если захочешь. Очень много приезжих, так любопытно за вами наблюдать."
+    $ portrait.viktoriya.morph(None, None, None, False)
+    $ portrait.main.morph(None, "happy", None, True)
     speech.main "Если переживу английский, то с радостью."
-    speech.main "Ну, мне не пора бежать. Опаздывать на вторую пару подряд такое себе... Еще и в первый день."
-    show screen portrait_main_undressed_happy(motion.unfocus(.7))
-    show screen portrait_viktoriya_undressed_normal(motion.focus(.3))
+    speech.main "Ну, мне не пора бежать. Опаздывать на вторую пару подряд такое себе... Ещё и в первый день."
+    $ portrait.main.morph(None, None, None, False)
+    $ portrait.viktoriya.morph(None, None, None, True)
     speech.viktoriya "Чао, как-нибудь увидимся!"
+    $ portrait.viktoriya.morph(None, None, None, False)
+    $ portrait.main.morph(None, None, None, True)
     show screen english_classroom_scene_2(blur_in)
-    show screen portrait_viktoriya_undressed_normal(motion.unfocus(.3))
-    hide screen portrait_viktoriya_undressed_normal with usual_transition
-    hide screen portrait_main_undressed_happy with usual_transition
+    $ portrait.main.disappear()
+    $ portrait.viktoriya.disappear()
     speech.thought "Так, теперь английский... Easy does it."
     hide screen english_classroom_scene_2 with usual_transition
+    stop ambient
     return
 
 
@@ -614,10 +579,10 @@ label first_desk_script:
     Character("???", kind = speech.egor) "Понимаю, я тоже чуть не опоздал. Зашел в {a=https://soc.urfu.ru/ru/upravlenie-razvitija-studencheskogo-potenciala/kovorkingi/#:~:text=Радиоточка}коворкинг{/a} вместо третьего этажа."
     Character("???", kind = speech.egor) "Тема — Баллистика."
     speech.main "Ха-ха, спасибо! А как зовут преподавателя?"
-    Character("???", kind = speech.egor) "Вроде, Антон Степанович."
+    Character("???", kind = speech.egor) "Вроде, Антон Валерьевич."
     hide screen first_desk_scene_2 with usual_transition
     show screen first_desk_scene_3 with usual_transition
-    speech.main "Антон Степанович, можете перелистнуть слайд?"
+    speech.main "Антон Валерьевич, можете перелистнуть слайд?"
     Character("???", kind = speech.kseniya) "Ха-ха-ха!"
     hide screen first_desk_scene_3 with usual_transition
     show screen first_desk_scene_2 with usual_transition
@@ -642,8 +607,6 @@ label first_desk_script:
     speech.kseniya "Да, в одной группе. Тогда вместе и найдем аудиторию."
     speech.egor "Везёт вам. А мне на математику идти."
     hide screen first_desk_scene_2 with usual_transition
-    stop music
-    stop sound
     return
 
 
@@ -665,71 +628,58 @@ screen after_physics_scene_2(how):
     add "bg_english_entrance.jpg" fit "fill" at how
     zorder -10
 
+define after_physics_music = "Toby Fox — Confession.mp3"
+
 label after_physics_script:
     show screen after_physics_scene_1(None) with usual_transition
+    play music after_physics_music
     speech.thought "Физика прошла, на удивление, быстро."
     show screen after_physics_scene_1(blur_out)
-    show screen portrait_kseniya_undressed_normal(motion.move(.7)) with usual_transition
-    show screen portrait_main_undressed_normal(motion.move(.3)) with usual_transition
-    show screen portrait_main_undressed_normal(motion.focus(.3))
+    $ portrait.main.appear("undressed", "normal", .3, True)
+    $ portrait.kseniya.appear("undressed", "normal", .7, False)
     speech.main "Я ничего не успел записать. Баллистика — это наука о... брошенных в пространстве, основанная на... Вся тетрадь в корявых определениях."
-    show screen portrait_main_undressed_normal(motion.unfocus(.3))
-    show screen portrait_kseniya_undressed_normal(motion.focus(.7))
+    $ portrait.main.morph(None, None, None, False)
+    $ portrait.kseniya.morph(None, None, None, True)
     speech.kseniya "Это не школа. Понятное дело, что преподаватели диктуют быстрее. Да и не думаю, что прям все нужно записывать."
-    show screen portrait_kseniya_undressed_normal(motion.unfocus(.7))
-    show screen portrait_main_undressed_normal(motion.focus(.3))
+    $ portrait.kseniya.morph(None, None, None, False)
+    $ portrait.main.morph(None, None, None, True)
     speech.main "Просто сложно понять, что будет на {color=#FF00FF}НТК{/color}. Возможно одна из формул, которые я не успел записать."
     speech.main "Кстати, будет экзамен по английскому?"
-    show screen portrait_main_undressed_normal(motion.unfocus(.3))
-    hide screen portrait_kseniya_undressed_normal
-    show screen portrait_kseniya_undressed_happy(motion.move(.7))
-    show screen portrait_kseniya_undressed_happy(motion.focus(.7))
+    $ portrait.main.morph(None, None, None, False)
+    $ portrait.kseniya.morph(None, "happy", None, True)
     speech.kseniya "Будет."
-    show screen portrait_kseniya_undressed_happy(motion.unfocus(.7))
-    show screen portrait_main_undressed_normal(motion.focus(.3))
+    $ portrait.kseniya.morph(None, None, None, False)
+    $ portrait.main.morph(None, None, None, True)
     speech.main "Хе-хе-хе, ну конечно же. Надо было идти на уровень ниже. Говорят, на B2 и C1 куча домашки и разговорного."
-    show screen portrait_main_undressed_normal(motion.unfocus(.3))
-    hide screen portrait_kseniya_undressed_happy
-    show screen portrait_kseniya_undressed_normal(motion.move(.7))
-    show screen portrait_kseniya_undressed_normal(motion.focus(.7))
+    $ portrait.main.morph(None, None, None, False)
+    $ portrait.kseniya.morph(None, "normal", None, True)
     speech.kseniya "Вот сейчас и посмотрим. Программистам же нужен английский. Не думаю, что мы ошиблись с выбором."
+    $ portrait.kseniya.disappear()
+    $ portrait.main.disappear()
     show screen after_physics_scene_1(blur_in)
-    show screen portrait_kseniya_undressed_normal(motion.unfocus(.7))
-    hide screen portrait_kseniya_undressed_normal with usual_transition
-    hide screen portrait_main_undressed_normal with usual_transition
     hide screen after_physics_scene_1 with usual_transition
 
     show screen after_physics_scene_2(blur_out) with usual_transition
-    show screen portrait_kseniya_undressed_normal(motion.move(.7)) with usual_transition
-    show screen portrait_main_undressed_normal(motion.move(.3)) with usual_transition
-    show screen portrait_main_undressed_normal(motion.focus(.3))
+    $ portrait.main.appear("undressed", "normal", .3, True)
+    $ portrait.kseniya.appear("undressed", "normal", .7, False)
     speech.main "А вот и он. Я про кабинет. Даже не опоздали, время еще есть..."
     speech.main "Может расскажешь что-нибудь о себе?"
-    show screen portrait_main_undressed_normal(motion.unfocus(.3))
-    show screen portrait_kseniya_undressed_normal(motion.focus(.7))
+    $ portrait.main.morph(None, None, None, False)
+    $ portrait.kseniya.morph(None, None, None, True)
     speech.kseniya "Да ничего интересного. Живу в девятой общаге, учусь. В свободное время преподаю и подрабатываю."
-    show screen portrait_kseniya_undressed_normal(motion.unfocus(.7))
-    show screen portrait_main_undressed_normal(motion.focus(.3))
-    speech.main "Круто, я тоже в девятой живу!"
-    show screen portrait_main_undressed_normal(motion.unfocus(.3))
-    hide screen portrait_kseniya_undressed_normal
-    show screen portrait_kseniya_undressed_sad(motion.move(.7))
-    show screen portrait_kseniya_undressed_sad(motion.focus(.7))
+    $ portrait.kseniya.morph(None, "sad", None, None)
     speech.kseniya "На днях увидела все онлайн курсы, которые нам поставили, теперь свободного времени у меня нет."
-    show screen portrait_kseniya_undressed_sad(motion.unfocus(.7))
-    hide screen portrait_main_undressed_normal
-    show screen portrait_main_undressed_sad(motion.move(.3))
-    show screen portrait_main_undressed_sad(motion.focus(.3))
-    speech.main "Ох, как я тебя понимаю. Десять штук.. Сказали, что ещё добавят по физике и ОРГ. Ставим ставки, когда мы сойдём с ума."
-    show screen portrait_main_undressed_sad(motion.unfocus(.3))
-    hide screen portrait_kseniya_undressed_sad
-    show screen portrait_kseniya_undressed_normal(motion.move(.7))
-    show screen portrait_kseniya_undressed_normal(motion.focus(.7))
+    $ portrait.kseniya.morph(None, None, None, False)
+    $ portrait.main.morph(None, "sad", None, True)
+    speech.main "Ох, как я тебя понимаю. Десять штук... Сказали, что ещё добавят по физике и ОРГ. Ставим ставки, когда мы сойдём с ума."
+    $ portrait.main.morph(None, None, None, False)
+    $ portrait.kseniya.morph(None, "normal", None, True)
     speech.kseniya "Мне кажется, я уже..."
+    $ portrait.kseniya.disappear()
+    $ portrait.main.disappear()
     show screen after_physics_scene_2(blur_in)
-    hide screen portrait_kseniya_undressed_normal with usual_transition
-    hide screen portrait_main_undressed_sad with usual_transition
     hide screen after_physics_scene_2 with usual_transition
+    stop ambient
     return
 
 
@@ -760,8 +710,11 @@ screen back_home_scene_3:
     add "bg_sleepy_classroom.jpg" fit "fill"
     zorder -10
 
+define back_home_music = "Toby Fox — Uwa!! So Temperate.mp3"
+
 label back_home_script:
     show screen text_scene("Вечером этого же дня") with usual_transition
+    play music back_home_music
     ""
     hide screen text_scene with usual_transition 
     show screen back_home_scene_1 with usual_transition

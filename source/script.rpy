@@ -88,12 +88,11 @@ label splashscreen:
 
 
 
-
 screen text_scene(what):
     text "{bt=3}{size=+15}[what]{/size}{/bt}" xpos .5 ypos .5 xanchor .5 yanchor .5
     zorder -10
 
-define stub = "К сожалению эта ветка еще не реализована :("
+define stub = "К сожалению, эта ветка еще не реализована :("
 
 label start:
     call scene1_script 

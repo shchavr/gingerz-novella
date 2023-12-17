@@ -11,7 +11,4 @@
 [Тимлидер](https://vk.com/id378017178) 
 [Геймдизайнер](https://vk.com/id350833558) 
 [Аналитик](https://vk.com/id419958029) 
-[Разработчик](https://vk.com/id302121073) 
-
-[Новостной канал](https://t.me/+ME8wMQnQhHNmNmUy)
-[Основная беседа](https://vk.me/join/qhj41PILODA4aSwksvOQi1c3j6Z/vFIr/6Y=)
+[Разработчик](https://vk.com/id302121073)

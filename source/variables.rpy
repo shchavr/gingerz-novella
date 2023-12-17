@@ -30,3 +30,8 @@ default guess_tried_anya = False
 default guess_tried_natasha = False
 default guess_tried_ylya = False
 default guess_tried_eva = False
+
+default meeting_tried_game = False
+default meeting_tried_start = False
+default meeting_tried_polina = False
+default meeting_tried_who = False

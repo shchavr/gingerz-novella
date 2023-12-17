@@ -60,7 +60,10 @@ screen premain_5:
     text "{color=#FFFFFF}{size=+15}Приятной игры.{/size}{/color}" xpos .5 ypos .45 xanchor .5
     text "{color=#FFFFFF}{size=-15}Нажмите {b}пробел{/b} или {b}левую кнопку мыши{/b}, чтобы пропустить этот экран.{/size}{/color}" xpos .5 ypos .65 xanchor .5
 
+define splashscreen_music = "Toby Fox — Snowdin Town.mp3"
+
 label splashscreen:
+    play music splashscreen_music
     if True: # Поменять на False, чтобы не показывать (при разработке мешает)
         show screen premain_1 with usual_transition
         pause 2.
@@ -88,6 +91,9 @@ label splashscreen:
 
 
 
+
+
+
 screen text_scene(what):
     text "{bt=3}{size=+15}[what]{/size}{/bt}" xpos .5 ypos .5 xanchor .5 yanchor .5
     zorder -10
@@ -95,7 +101,9 @@ screen text_scene(what):
 define stub = "К сожалению, эта ветка еще не реализована :("
 
 label start:
-    call scene1_script 
-    call scene2_script 
-    call scene3_script 
+    stop music fadeout .5
+    call scene1_script
+    call scene2_script
+    call scene3_script
+    call scene4_script
     return

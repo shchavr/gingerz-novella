@@ -2,9 +2,9 @@ label scene3_script:
     if branch_choice_a_b == 1:
         call canteen_entrance_script
         if branch_choice_1_2 == 1:
-            call canteen_valeriya_script
+           call canteen_valeriya_script
         else:
-            call canteen_kseniya_script
+           call canteen_kseniya_script
         call live_event_script
         call after_show_script
     else:
@@ -51,7 +51,8 @@ define canteen_entrance_ambient = "Lively Noise.mp3"
 
 label canteen_entrance_script:
     show screen canteen_entrance_scene_1 with usual_transition
-    play music canteen_entrance_music
+    stop music fadeout .5
+    play music canteen_entrance_music fadein .5
     speech.thought "И правда летит... Вы ещё тут? С первого учебного дня прошло две недели."
     speech.thought "Что нового? Пары и учеба."
     hide screen canteen_entrance_scene_1 with usual_transition
@@ -64,7 +65,7 @@ label canteen_entrance_script:
     speech.thought "Именно поэтому сейчас я отправляюсь в столовку."
     hide screen canteen_entrance_scene_3 with usual_transition
     show screen canteen_entrance_scene_4 with usual_transition
-    play ambient canteen_entrance_ambient loop
+    play ambient canteen_entrance_ambient loop fadein .5
     speech.thought "Вообще, пока что я мало с кем познакомился. Конечно, я знаю свою группу, других ребят, но близко общаюсь только с Викой и Ваней."
     hide screen canteen_entrance_scene_4 with usual_transition
     show screen canteen_entrance_scene_5 with usual_transition
@@ -108,8 +109,11 @@ screen canteen_valeriya_scene_2(how):
     zorder -10
 
 screen canteen_valeriya_scene_3:
-    add "bg_room_books.jpg" fit "fill"
+    add "bg_room_bed.jpg" fit "fill"
     zorder -10
+
+define canteen_valeriya_sound = "Notification.mp3"
+define canteen_valeriya_music = "Toby Fox — Undyne.mp3"
 
 label canteen_valeriya_script:
     show screen canteen_valeriya_scene_1(None) with usual_transition
@@ -123,7 +127,7 @@ label canteen_valeriya_script:
     $ portrait.valeriya.morph(None, None, None, True)
     speech.valeriya "Да, силь ву пле."
     $ portrait.valeriya.morph(None, None, None, False)
-    speech.thought "У нее было такое лицо... Ну, она была чем-то занята. Но сидеть в тишине — мега глупо, да же?  Ну я и..."
+    speech.thought "У неё было такое лицо... Ну, она была чем-то занята. Но сидеть в тишине — мега глупо, да же?  Ну я и..."
     $ portrait.main.morph(None, "sad", None, True)
     speech.main "Ты тоже бесплатный завтрак взяла?"
     $ portrait.main.morph(None, None, None, False)
@@ -141,7 +145,7 @@ label canteen_valeriya_script:
     speech.thought "Потом ушла, поэтому я остался за пустым столом."
     show screen canteen_valeriya_scene_1(blur_in)
     $ portrait.main.disappear()
-    Character("???", kind = speech.kseniya) "Приветствую. Тут свободное место, если мне не изменяет мое зрение."
+    Character("???", kind = speech.kseniya) "Приветствую. Тут свободное место, если мне не изменяет моё зрение."
     hide screen canteen_valeriya_scene_1 with usual_transition
     show screen canteen_valeriya_scene_2(None) with usual_transition
     Character("???", kind = speech.kseniya) "Можно я здесь сяду, если это не доставит неудобств?"
@@ -207,13 +211,16 @@ label canteen_valeriya_script:
             speech.main "Ксюш? О чем задумалась?"
             speech.kseniya "Я? Ничего. А можешь дать мне свой ВК?"
     hide screen canteen_valeriya_scene_2 with usual_transition
-    stop ambient
+    stop ambient fadeout .5
     show screen text_scene("Тем же вечером") with usual_transition
     ""
     hide screen text_scene with usual_transition
     show screen canteen_valeriya_scene_3 with usual_transition
+    stop music fadeout .5
+    play music canteen_valeriya_music fadein .5
     speech.thought "Мне пришло сообщение с неизвестного номера."
-    Character("8-922-xxx-xx-00", kind = speech.egor) "Завтра. Теплофак. 16:00."
+    play sound canteen_valeriya_sound
+    speech.polina_hidden "Завтра. Теплофак. 16:00."
     speech.thought "Видимо, Ксюша всё-таки нашла какое-то мероприятие. Собираюсь ли я в своё свободное время тащиться в теплофак?"
     speech.thought "Ха-ха-ха-ха-ха!"
     hide screen canteen_valeriya_scene_3 with usual_transition
@@ -238,12 +245,15 @@ screen canteen_kseniya_scene_2(how):
     zorder -10
 
 screen canteen_kseniya_scene_3:
-    add "bg_room_books.jpg" fit "fill"
+    add "bg_room_bed.jpg" fit "fill"
     zorder -10
+
+define canteen_kseniya_sound = "Notification.mp3"
+define canteen_kseniya_music = "Toby Fox — Undyne.mp3"
 
 label canteen_kseniya_script:
     show screen canteen_kseniya_scene_1 with usual_transition
-    speech.thought "Да нет. Вы бы сели? Хотя, если вы выбрали этот вариант, то я знаю ответ. Глупо садиться к человеку, ещё и здесь, поэтому мое место за единственным свободным столиком."
+    speech.thought "Да нет. Вы бы сели? Хотя, если вы выбрали этот вариант, то я знаю ответ. Глупо садиться к человеку, ещё и здесь, поэтому моё место за единственным свободным столиком."
     speech.thought "Хотя, может и не совсем... Там, вроде, чьи-то вещи."
     Character("???", kind = speech.kseniya) "Приветствую, тут занято."
     hide screen canteen_kseniya_scene_1 with usual_transition
@@ -290,13 +300,16 @@ label canteen_kseniya_script:
     speech.main "Ксюш... Я хочу поесть чипсы и пересмотреть Джокера."
     speech.main "Без обид."
     hide screen canteen_kseniya_scene_2 with usual_transition
-    stop ambient
+    stop ambient fadeout .5
     show screen text_scene("Тем же вечером") with usual_transition
     ""
     hide screen text_scene with usual_transition
     show screen canteen_kseniya_scene_3 with usual_transition
+    stop music fadeout .5
+    play music canteen_kseniya_music fadein .5
+    play sound canteen_kseniya_sound
     speech.thought "Тогда она меня, видимо, не услышала, потому что вечером на мой телефон пришло сообщение с неизвестного номера."
-    Character("8-922-xxx-xx-00", kind = speech.egor) "Завтра. Теплофак. 16:00."
+    speech.polina_hidden "Завтра. Теплофак. 16:00."
     speech.thought "Променять Джокера и чипсики на мероприятие?"
     speech.thought "Ха-ха-ха-ха-ха!"
     hide screen canteen_kseniya_scene_3 with usual_transition
@@ -327,11 +340,14 @@ screen live_event_scene_2(how):
 
 define live_event_music = "Toby Fox — Another Medium.mp3"
 define live_event_sound = "Short Applause.mp3"
-define live_event_ambient = "Lively Noise.mp3"
+define gotcha_event_sound = "Positive.mp3"
+define live_event_ambient_1 = "Park Noise.mp3"
+define live_event_ambient_2 = "Lively Noise.mp3"
 
 label gotcha_event_script:
     if not asking_smth:
         $ asking_smth = True
+        play sound gotcha_event_sound
         $ player_score += 10
         $ renpy.notify("Вы нашли секрет! Баллы: 10/10. Всего баллов: " + str(player_score) + ".")
     return
@@ -339,7 +355,9 @@ label gotcha_event_script:
 label live_event_script:
     show screen live_event_scene_1 with usual_transition
     $ asking_smth = False
-    play music live_event_music
+    stop music fadeout .5
+    play music live_event_music fadein .5
+    play ambient live_event_ambient_1 fadein .5
     speech.kseniya "Приветствую!"
     speech.main "Я до сих пор не понимаю, почему я здесь."
     speech.valeriya "“Не любитель движа”?! “Не пойду, не пойду”? Интересный ты конечно!"
@@ -352,7 +370,8 @@ label live_event_script:
     speech.valeriya "Гоу найдем аудиторию, пять минут до начала осталось."
     hide screen live_event_scene_1 with usual_transition
     show screen live_event_scene_2(blur_out) with usual_transition
-    play ambient live_event_ambient loop
+    stop ambient fadeout .5
+    play ambient live_event_ambient_2 loop fadein .5
     $ portrait.main.appear("dressed", "sad", .3, False)
     $ portrait.kseniya.appear("dressed", "normal", .7, True)
     speech.kseniya "Я по дороге прочитала, что здесь будет что-то про навыки для ИИ. Ты зарегистрировал нашу команду?"
@@ -379,10 +398,10 @@ label live_event_script:
     $ portrait.valeriya.disappear()
     Character("Ведущий", kind = speech.generic) "Н-у-у-у что-о-о-о, первокурсники... Всем огромный приве-е-ет! Вы готовы пошуме-е-еть?"
     Character("Ведущий", kind = speech.generic) "Сегодня мы с вами займемся полезными делами! Вы распределились на команды, список у нас есть."
-    Character("Ведущий", kind = speech.generic) "Мы ставим вам баллы — вы выполняете задания. Будут победители, будут подарки! Еще раз... Вы готовы-ы-ы?"
+    Character("Ведущий", kind = speech.generic) "Мы ставим вам баллы — вы выполняете задания. Будут победители, будут подарки! Ещё раз... Вы готовы-ы-ы?"
     speech.thought "Зал взорвался. Но я всё ещё не понимал, почему регать команду должен был именно я. И какой ещё номер?"
     speech.thought "И почему за столом Лера не могла сказать ни слова, а тут — силь ву пле."
-    Character("Ведущий", kind = speech.generic) "Ваша задача сегодня — угадать, какие навыки придумали для ИИ ваши наставники. Но это не все: нужно угадать и предложить навыки лучше!"
+    Character("Ведущий", kind = speech.generic) "Ваша задача сегодня — угадать, какие навыки придумали для ИИ ваши наставники. Но это не всё: нужно угадать и предложить навыки лучше!"
     Character("Ведущий", kind = speech.generic) "Или смешнее. Или глупее. Это на ваш выбор, ха-ха-ха! Вы присылаете ответы в телеграмм и зарабатываете баллы."
     Character("Ведущий", kind = speech.generic) "Всё понятно, радисты?"
     show screen live_event_scene_2(blur_out)
@@ -550,7 +569,6 @@ label live_event_script:
     Character("Ведущий", kind = speech.generic) "“Рекурсивные пряники”, в точку! Ха-ха, смешное название, ребят, двадцать баллов ваши!"
     speech.thought "Нет, не надо вопросов. Вика зарегала нашу команду под именем “Рекурсивные пряники”. Я не знаю, почему."
     hide screen live_event_scene_2 with usual_transition
-    stop ambient
     return
 
 
@@ -574,16 +592,33 @@ screen after_show_scene_2(how):
     add "bg_street_people.jpg" fit "fill" at how
     zorder -10
 
-define after_show_music = "Toby Fox — Hopes And Dreams.mp3"
+screen after_show_scene_3:
+    add "bg_nine_sk.jpg" fit "fill"
+    zorder -10
+
+screen after_show_scene_4(how):
+    add "bg_room_bed.jpg" fit "fill" at how
+    zorder -10
+
+define after_show_music_1 = "Toby Fox — Hopes And Dreams.mp3"
+define after_show_music_2 = "Toby Fox — Unnecessary Tension.mp3"
+define after_show_ambient_1 = "Park Noise.mp3"
+define after_show_ambient_2 = "City Noise.mp3"
+define after_show_sound = "Notification.mp3"
 
 label after_show_script:
     show screen after_show_scene_1 with usual_transition
-    play music after_show_music
+    stop music fadeout .5
+    play music after_show_music_1 fadein .5
+    stop ambient fadeout .5
+    play ambient after_show_ambient_1 loop fadein .5
     speech.thought "Мы не выиграли тогда. Нам не хватило 15 баллов, которые мы потеряли на первых вопросах."
     speech.thought "Но, мне казалось, мы получили нечто большее, чем мерч от УрФУ и третье место."
     speech.thought "Хотя что может быть круче толстовок?"
     hide screen after_show_scene_1 with usual_transition
     show screen after_show_scene_2(None) with usual_transition
+    stop ambient fadeout .5
+    play ambient after_show_ambient_2 loop fadein .5
     speech.thought "Мне вообще не свойственно взаимодействовать с людьми, которых я знаю не так давно, однако я активно участвовал в беседе."
     show screen after_show_scene_2(blur_out)
     $ portrait.viktoriya.appear("dressed", "happy", .5, True)
@@ -599,7 +634,82 @@ label after_show_script:
     $ portrait.main.appear("dressed", "normal", .4, True)
     speech.thought "Мы шли и болтали. Как будто мы знакомы уже год, или пять."
     $ portrait.main.morph(None, None, None, False)
+    $ portrait.valeriya.morph(None, None, None, True)
     speech.valeriya "Подождите-е-е!!! А представьте, если сделать так, чтобы по утрам ИИ сам бы выбирал тебе музыку, под которую нужно проснуться."
-    speech.valeriya "Например, у тебя сегодня коллоквиум, и он включает тебе {color=#FF00FF}это{/color}."
-    hide after_show_scene_2 with usual_transition
+    speech.valeriya "Например, у тебя сегодня коллоквиум, и он включает тебе {a=https://youtu.be/sXq0qRkghUM?autoplay=1}это{/a}."
+    $ portrait.valeriya.morph(None, None, None, False)
+    $ portrait.viktoriya.morph(None, None, None, True)
+    speech.viktoriya "Ха-ха-ха-ха, шикарно-о-о-о!"
+    $ portrait.viktoriya.morph(None, "normal", None, False)
+    $ portrait.main.morph(None, None, None, True)
+    speech.main "Или знаете... Играл бы с тобой в игры?"
+    $ portrait.main.morph(None, "sad", None, None)
+    speech.main "У меня есть куча таких, которые я хочу пройти, но не с кем."
+    $ portrait.main.morph(None, "normal", None, False)
+    $ portrait.viktoriya.morph(None, "happy", None, True)
+    speech.viktoriya "Слушайте, настроение бомба! Анекдот?"
+    $ portrait.viktoriya.morph(None, None, None, False)
+    $ portrait.kseniya.morph(None, None, None, True)
+    speech.kseniya "Было бы превосходно!"
+    $ portrait.kseniya.morph(None, None, None, False)
+    $ portrait.valeriya.morph(None, None, None, True)
+    speech.valeriya "Валяй!"
+    $ portrait.valeriya.morph(None, None, None, False)
+    $ portrait.viktoriya.morph(None, "happy", None, True)
+    speech.viktoriya "Чтобы не искать каждый раз светофоры, Ваня сходил в МФЦ и получил справку с печатью, что он не робот."
+    $ portrait.main.disappear()
+    $ portrait.valeriya.disappear()
+    $ portrait.kseniya.disappear()
+    $ portrait.viktoriya.disappear()
+    hide screen after_show_scene_2 with usual_transition
+    show screen after_show_scene_3 with usual_transition
+    speech.thought "После легендарной шутки мы обсуждали, и обсуждали, и обсуждали искусственный интеллект... Мне тогда казалось, что это не просто мысли на ветер."
+    speech.thought "Как будто мы думали над нашим будущим проектом. Впервые за долгое время, мне было {b}правда{/b} хорошо."
+    speech.thought "Не знаю, куда делся мой гнев. Почему-то сейчас мне хотелось придумать как можно больше идей."
+    hide screen after_show_scene_3 with usual_transition
+    show screen after_show_scene_4(blur_out) with usual_transition
+    stop ambient fadeout .5
+    $ portrait.vanya.appear("undressed", "happy", .5, True) 
+    speech.vanya "Чува-ак, я сейчас упаду и не встану... Да ты просто сияешь!"
+    $ portrait.vanya.morph(None, None, None, False)
+    speech.thought "Я только зашёл в комнату и сразу услышал этот вопрос."
+    speech.thought "Потом повернулся к зеркалу и не заметил в себе никаких изменений."
+    $ portrait.vanya.morph(None, None, None, True)
+    speech.vanya "Глаза горя-ят... Ты втюрился что ли?"
+    $ portrait.vanya.morph(None, None, .3, False)
+    $ portrait.main.appear("dressed", "normal", .7, True) 
+    speech.main "Да ну тебя!"
+    $ portrait.main.morph(None, None, None, False)
+    $ portrait.vanya.morph(None, "normal", None, True)
+    speech.vanya "Я не вижу на тебе толстовки, так что тут только один варик, че-е-eл. Я жду опупенную историю и шлёпаю за пепси." 
+    $ portrait.vanya.morph(None, None, None, False)
+    $ portrait.vanya.disappear()
+    $ portrait.main.disappear()
+    show screen after_show_scene_4(blur_in)
+    speech.thought "Я рассказал Ване суть мероприятия и что мы там делали. Он расстроился, потому что ждал историю про какую-нибудь первокурсницу, но всё равно был за меня рад."
+    $ portrait.main.appear("undressed", "normal", .3, False)
+    $ portrait.vanya.appear("undressed", "normal", .7, True)
+    speech.vanya "Ну кайф бро, ка-a-айф, столько идей нашировертил, ёмаё."
+    speech.vanya "Откуда в твоей головешке столько?"
+    $ portrait.vanya.morph(None, None, None, False)
+    $ portrait.main.morph(None, None, None, True)
+    speech.main "Да мы как-то вместе шировертили. И ещё наста..."
+    $ portrait.main.morph(None, None, None, False)
+    stop music fadeout .5
+    play music after_show_music_2 fadein .5
+    speech.thought "Меня прервал звук уведомления на телефоне."
+    play sound after_show_sound
+    speech.polina_hidden "Неплохо получилось. Спасибо, что решил пойти."
+    speech.thought "Точно, я забыл записать Ксюшу у себя в телефоне. Почему она не пишет мне в вк?"
+    $ portrait.vanya.morph(None, None, None, True)
+    speech.vanya "Чё там?"
+    $ portrait.vanya.morph(None, None, None, False)
+    $ portrait.main.morph(None, None, None, True)
+    speech.main "Ксюша. Пишет, что мы сегодня были хороши."
+    $ portrait.main.morph(None, None, None, False)
+    $ portrait.vanya.morph(None, None, None, True)
+    speech.vanya "Хороши? Да потому что ты набазарил такого. Вы будущие мегамозги, куском пиццы клянусь!"
+    $ portrait.main.disappear() 
+    $ portrait.vanya.disappear()
+    hide screen after_show_scene_4 with usual_transition
     return

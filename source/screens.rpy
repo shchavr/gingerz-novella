@@ -353,12 +353,38 @@ style navigation_button_text:
 ##
 ## https://www.renpy.org/doc/html/screen_special.html#main-menu
 
+define main_menu_slides = ["title.jpg", "bg_alley_empty.jpg", "bg_guk_sky.jpg", "bg_rtf_coffeeshop.jpg", "bg_none_1.jpg", "bg_street_people.jpg", "bg_none_2.jpg", "bg_none_3.jpg", "bg_none_4.jpg"]
+define hold_slide = 10.
+define fade_slide = .5
+
+transform slide(index):
+    xanchor .5 yanchor .5 xpos .5 ypos .5 subpixel True alpha 0. zoom 1.
+    linear index * hold_slide
+    parallel:
+        ease fade_slide alpha 1.
+        linear hold_slide - fade_slide
+    parallel:
+        linear hold_slide zoom 1.3
+    parallel:
+        linear hold_slide - fade_slide
+        ease fade_slide alpha 0.
+    linear (len(main_menu_slides) - 1 - index) * hold_slide
+    repeat
+
 screen main_menu():
 
     ## This ensures that any other menu screen is replaced.
     tag menu
 
-    add gui.main_menu_background
+    add main_menu_slides[0] at slide(0)
+    add main_menu_slides[1] at slide(1)
+    add main_menu_slides[2] at slide(2)
+    add main_menu_slides[3] at slide(3)
+    add main_menu_slides[4] at slide(4)
+    add main_menu_slides[5] at slide(5)
+    add main_menu_slides[6] at slide(6)
+    add main_menu_slides[7] at slide(7)
+    add main_menu_slides[8] at slide(8)
     add "title.png"
 
     ## This empty frame darkens the main menu.
@@ -381,9 +407,10 @@ screen main_menu():
                 text "[config.version]":
                     style "main_menu_version"
 
-    vbox xpos 1.25 ypos .08 xanchor 1. yanchor 0.:
+    vbox xpos 1.26 ypos .13 xanchor 1. yanchor 0.:
+        spacing -50
+        text "{color=[gui.accent_color]}{size=-3}от команды Рекурсивные Пряники{/size}{/color} " xanchor 1.
         text "{color=[gui.accent_color]}{size=+120}{b}Gingers{/b}{/size}{/color}" xanchor 1.
-        text "{color=[gui.accent_color]}{size=+0}от команды Рекурсивные Пряники{/size}{/color}" xanchor 1.
 
 
 style main_menu_frame is empty

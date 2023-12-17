@@ -170,7 +170,7 @@ label desk_flashback_script:
     hide screen desk_flashback_scene_1 with usual_transition
     show screen desk_flashback_scene_3 with usual_transition
     play music desk_flashback_music
-    speech.main "Влипли... Ничего страшного. От четырех пар в понедельник еще никто не умирал."
+    speech.main "Влипли... Ничего страшного. От четырех пар в понедельник ещё никто не умирал."
     speech.main "Источник информации: живые второкурсники."
     hide screen desk_flashback_scene_3 with usual_transition
     return
@@ -208,6 +208,9 @@ screen room_packing_scene:
         vbox xpos .3 ypos .3 xanchor .5 yanchor .5:
             imagebutton idle "empty.png" hover "question.png" action Call("ask_door_script") at fade_in_out
     
+define room_packing_sound_1 = "Negative.mp3"
+define room_packing_sound_2 = "Positive.mp3"
+
 label ask_phys_script:
     if not asking_smth:
         $ asking_smth = True
@@ -379,9 +382,11 @@ label room_packing_script:
     $ tmp = max(packed_phys + packed_pe + packed_eng + 2 * packed_stud - 2 * (packed_org + packed_math), 0) * 2
     $ player_score += tmp
     if tmp == 10:
+        play sound room_packing_sound_2
         $ renpy.notify("Ура! Рюкзак собран правильно. Баллы: 10/10. Всего баллов: " + str(player_score) + ".")
         speech.thought "Успел и даже ничего не забыл! Пятнадцать минут и я в радике."
     else:
+        play sound room_packing_sound_1
         $ renpy.notify("Ой... Где-то допущена ошибка. Баллы: " + str(tmp) + "/10. Всего баллов: " + str(player_score) + ".")
         speech.thought "Кажется здесь что-то не так..."
     hide screen room_packing_scene with usual_transition

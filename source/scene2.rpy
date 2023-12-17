@@ -48,10 +48,12 @@ screen street_monologue_scene_6:
     zorder -10
 
 define street_monologue_music = "Toby Fox — Ruins.mp3"
+define street_monologue_ambient = "City Noise.mp3"
 
 label street_monologue_script:
     show screen street_monologue_scene_1 with usual_transition
-    play music street_monologue_music
+    play music street_monologue_music fadein .5
+    play ambient street_monologue_ambient loop fadein .5
     speech.thought "Вы же зашли сюда, чтобы узнать что-то про айти? Или про универ... Ну, на крайний случай, про мой успешный путь и все дела..."
     speech.thought "Ну, слушайте. Жили-были... Нет."
     speech.thought "Однажды..."
@@ -61,7 +63,7 @@ label street_monologue_script:
     hide screen street_monologue_scene_2 with usual_transition
     show screen street_monologue_scene_3 with usual_transition
     speech.thought "Почему  {a=https://urfu.ru/ru/}{i}УрФУ{/i}{/a}? Нуу.. Я долго выбирал универ. Мне важно было близкое расположение общежитий (ребятам из {a=https://www.ural.kp.ru/daily/27555/4823514/}{i}новокольцово{/i}{/a} привет), хорошее образование, крупный город, подъемные проходные баллы."
-    speech.thought "Звучит как реклама? Мне за нее не платили. Но я правда не думал, что все это найду. Да еще и в российском вузе. Еще и в УрФУ."
+    speech.thought "Звучит как реклама? Мне за неё не платили. Но я правда не думал, что всё это найду. Да ещё и в российском вузе. Ещё и в УрФУ."
     hide screen street_monologue_scene_3 with usual_transition
     show screen street_monologue_scene_4 with usual_transition
     speech.thought "Кстати... Что сближает многих студентов? Неопределенность! А кем я хочу быть в будущем? Не знаю."
@@ -97,15 +99,20 @@ screen rtf_watchwoman_scene_2:
     zorder -10
 
 define rtf_watchwoman_music = "Toby Fox — Dating Tense!.mp3"
+define rtf_watchwoman_sound_1 = "Negative.mp3"
+define rtf_watchwoman_sound_2 = "Positive.mp3"
 
 label rtf_watchwoman_script:
     show screen rtf_watchwoman_scene_1(blur_out) with usual_transition
-    play music rtf_watchwoman_music
+    stop music fadeout .5
+    stop ambient fadeout .5
+    play music rtf_watchwoman_music fadein .5
     speech.thought "Ну, кажется, есть ещё одна проблема..."
     Character("Вахтёрша", kind = speech.generic) "{sc=3}Молодой человек! Пропуск мне кто показывать будет?{/sc}"
     menu:
         speech.thought "Что ответить..?"
         "Нагрубить и сказать, что уже показывал":
+            play sound rtf_watchwoman_sound_1
             $ tmp = "провалена"
             $ portrait.main.appear("dressed", "normal", .8, True)
             speech.main "Я это уже сделал, женщина. Внимательней нужно смотреть, или у вас со зрением проблемы?"
@@ -119,7 +126,8 @@ label rtf_watchwoman_script:
             $ renpy.notify("За ссору с вахтершей вы получили баллов: 0/10. Всего баллов: " + str(player_score) + ".")
             speech.thought "Придётся бежать с поля боя."
             $ portrait.main.disappear()
-        "Промолчать и показать пропуск еще раз":
+        "Промолчать и показать пропуск ещё раз":
+            play sound rtf_watchwoman_sound_2
             $ tmp = "пройдена. “Вас наполняет решимость”."
             $ player_score += 10
             $ renpy.notify("За терпение вы получили баллов: 10/10. Всего баллов: " + str(player_score) + ".")
@@ -155,9 +163,11 @@ screen rtf_classroom_scene_2:
     zorder -10
 
 define rtf_classroom_music = "Toby Fox — Quiet Water.mp3"
-define rtf_classroom_ambient = "Quiet noise.mp3"
+define rtf_classroom_ambient = "Classroom noise.mp3"
 
 label rtf_classroom_script:
+    stop music fadeout .5
+    play music rtf_classroom_music fadein .5
     speech.thought "..."
     speech.thought "..."
     speech.thought "???"
@@ -165,8 +175,7 @@ label rtf_classroom_script:
     speech.thought "Она оказалась на третьем этаже. Сколько времени я искал? Даже не спрашивайте."
     hide screen rtf_classroom_scene_1 with usual_transition
     show screen rtf_classroom_scene_2 with usual_transition
-    play music rtf_classroom_music
-    play ambient rtf_classroom_ambient loop
+    play ambient rtf_classroom_ambient loop fadein .5
     menu:
         speech.thought "Куда мне сесть?"
         "Галёрка — поближе к обществу!":
@@ -314,7 +323,7 @@ label gallery_dialogue_script:
     show screen gallery_dialogue_scene_4 with usual_transition
     speech.main "Вот блин."
     hide screen gallery_dialogue_scene_4 with usual_transition
-    stop music
+    stop music fadeout .5
     return
 
 
@@ -335,11 +344,16 @@ screen coffee_script(how):
     zorder -10
 
 define coffee_music = "Toby Fox — Hotel.mp3"
-define coffee_sound = "Short Applause.mp3"
+define coffee_ambient = "Quiet Noise.mp3"
+define coffee_sound_1 = "Negative.mp3"
+define coffee_sound_2 = "Positive.mp3"
 
 label coffee_script:
     show screen coffee_script(None) with usual_transition
-    play music coffee_music
+    stop ambient fadeout .5
+    play ambient coffee_ambient loop fadein .5
+    stop music fadeout .5
+    play music coffee_music fadein .5
     speech.thought "Мучительно прошла физика, и мы отправились искать кабинет английского."
     show screen coffee_script(blur_out)
     $ portrait.viktoriya.appear("undressed", "normal", .3, False)
@@ -399,9 +413,10 @@ label coffee_script:
                 $ guess_tried_eva = True
                 $ guess_choice = "Ева"
                 jump guess_nope
-        label guess_nope:    
+        label guess_nope:
         $ portrait.main.morph(None, None, None, True)
         speech.main "[guess_choice]?"
+        play sound coffee_sound_1
         $ portrait.main.morph(None, None, None, False)
         if guess_tries == 0:
             $ portrait.viktoriya.morph(None, "normal", None, True)
@@ -428,10 +443,10 @@ label coffee_script:
         $ guess_tries += 1
         if False:
             label guess_yes:
+            play sound coffee_sound_2
             $ player_score += 10
             $ portrait.viktoriya.morph(None, "happy", None, True)
             $ renpy.notify("Вы угадали! За игру вы получили баллов: 10/10. Всего баллов: " + str(player_score) + ".")
-            play sound coffee_sound
             speech.viktoriya "Бинго-о-о!"
             $ guess_tries = 5
     $ portrait.main.disappear()
@@ -508,7 +523,7 @@ label english_classroom_script:
     speech.main "Не было желания стать дизайнером?"
     $ portrait.main.morph(None, None, None, False)
     $ portrait.viktoriya.morph(None, "happy", None, True)
-    speech.viktoriya "Ха-ха-ха, какой из меня дизайнер! Хотя... Не знаю. Я еще не определилась."
+    speech.viktoriya "Ха-ха-ха, какой из меня дизайнер! Хотя... Не знаю. Я ещё не определилась."
     $ portrait.viktoriya.morph(None, "normal", None, None)
     speech.viktoriya "В любом случае, время есть. Если кто-то оценит мои работы, то почему бы и нет."
     $ portrait.viktoriya.morph(None, None, None, False)
@@ -538,7 +553,7 @@ label english_classroom_script:
     $ portrait.viktoriya.disappear()
     speech.thought "Так, теперь английский... Easy does it."
     hide screen english_classroom_scene_2 with usual_transition
-    stop ambient
+    stop ambient fadeout .5
     return
 
 
@@ -629,10 +644,14 @@ screen after_physics_scene_2(how):
     zorder -10
 
 define after_physics_music = "Toby Fox — Confession.mp3"
+define after_physics_ambient = "Quiet Noise.mp3"
 
 label after_physics_script:
     show screen after_physics_scene_1(None) with usual_transition
-    play music after_physics_music
+    stop ambient fadeout .5
+    play ambient after_physics_ambient loop fadein .5
+    stop music fadeout .5
+    play music after_physics_music fadein .5
     speech.thought "Физика прошла, на удивление, быстро."
     show screen after_physics_scene_1(blur_out)
     $ portrait.main.appear("undressed", "normal", .3, True)
@@ -640,7 +659,7 @@ label after_physics_script:
     speech.main "Я ничего не успел записать. Баллистика — это наука о... брошенных в пространстве, основанная на... Вся тетрадь в корявых определениях."
     $ portrait.main.morph(None, None, None, False)
     $ portrait.kseniya.morph(None, None, None, True)
-    speech.kseniya "Это не школа. Понятное дело, что преподаватели диктуют быстрее. Да и не думаю, что прям все нужно записывать."
+    speech.kseniya "Это не школа. Понятное дело, что преподаватели диктуют быстрее. Да и не думаю, что прям всё нужно записывать."
     $ portrait.kseniya.morph(None, None, None, False)
     $ portrait.main.morph(None, None, None, True)
     speech.main "Просто сложно понять, что будет на {color=#FF00FF}НТК{/color}. Возможно одна из формул, которые я не успел записать."
@@ -662,7 +681,7 @@ label after_physics_script:
     show screen after_physics_scene_2(blur_out) with usual_transition
     $ portrait.main.appear("undressed", "normal", .3, True)
     $ portrait.kseniya.appear("undressed", "normal", .7, False)
-    speech.main "А вот и он. Я про кабинет. Даже не опоздали, время еще есть..."
+    speech.main "А вот и он. Я про кабинет. Даже не опоздали, время ещё есть..."
     speech.main "Может расскажешь что-нибудь о себе?"
     $ portrait.main.morph(None, None, None, False)
     $ portrait.kseniya.morph(None, None, None, True)
@@ -679,7 +698,7 @@ label after_physics_script:
     $ portrait.main.disappear()
     show screen after_physics_scene_2(blur_in)
     hide screen after_physics_scene_2 with usual_transition
-    stop ambient
+    stop ambient fadeout .5
     return
 
 
@@ -711,10 +730,13 @@ screen back_home_scene_3:
     zorder -10
 
 define back_home_music = "Toby Fox — Uwa!! So Temperate.mp3"
+define back_home_sound = "Positive.mp3"
+define back_home_ambient = "Classroom Noise.mp3"
 
 label back_home_script:
     show screen text_scene("Вечером этого же дня") with usual_transition
-    play music back_home_music
+    stop music fadeout .5
+    play music back_home_music fadein .5
     ""
     hide screen text_scene with usual_transition 
     show screen back_home_scene_1 with usual_transition
@@ -722,13 +744,13 @@ label back_home_script:
         speech.main "...вот, а потом было ещё три пары. Это просто так... странно? Что всё не так плохо."
         speech.main "Я думал, знакомства заводить сложнее. А она ещё и помогла мне найти кабинет."
         speech.vanya "Бро-о, я говорил, всё норм будет и чтоб ты не кис. Клянусь тапком, говорил."
-        speech.main "Кстати, я ведь уже сказал, что она рисует. Я думаю, ты бы нашел с ней общий язык. Тоже этим увлекаешься. Могу дать ее контакты."
+        speech.main "Кстати, я ведь уже сказал, что она рисует. Я думаю, ты бы нашел с ней общий язык. Тоже этим увлекаешься. Могу дать её контакты."
         speech.vanya "Эээ... Да я ж не рисую, ты чё... Так, калякаю на листке. Фигня это всё, я любитель. Лучше расскажи, как англ прошел."
         speech.main "Да в целом... неплохо?"
     else:
         speech.main "...вот, а потом было ещё три пары. Знаешь, я познакомился с новыми людьми. Это просто так... странно?"
         speech.main "Что всё не так плохо. Я думал, знакомства заводить сложнее."
-        speech.vanya "Я говорил, что все будет пучком. Ты, по-моему, накручиваешь себя."
+        speech.vanya "Я говорил, что всё будет пучком. Ты, по-моему, накручиваешь себя."
         speech.main "Возможно. Кстати, я подсел сегодня к чуваку... Вроде, его звали Егор. Он неправильно сказал мне имя преподавателя, когда я его спросил."
         speech.main "Я мало того опоздал, так ещё и на всю аудиторию назвал физика левым именем. Понимаю, можно было перепутать фамилию и отчество..."
         speech.main "Но он сам {b}правильно{/b} обращался к нему на протяжении всей пары."
@@ -740,22 +762,26 @@ label back_home_script:
     hide screen back_home_scene_1 with usual_transition
     show screen back_home_scene_2 with usual_transition
     if branch_choice_a_b == 1:
+        play ambient back_home_ambient loop fadein .5
         speech.main "Я привык всё критиковать, но тут мне правда зашло."
-        speech.main "Я думал, что, возможно, стоило выбрать уровень ниже. Теперь так не считаю. Хотя все равно сложно: у меня разговорный не очень сильный."
+        speech.main "Я думал, что, возможно, стоило выбрать уровень ниже. Теперь так не считаю. Хотя всё равно сложно: у меня разговорный не очень сильный."
     else:
         speech.main "Сказал Ксюше до пары, что надо было выбирать уровень ниже. Теперь так не считаю."
         speech.main "Хотя ей, вроде, не особо понравилось."
     menu:
         speech.vanya "О чём базарили-то?"
         "Животные":
+            play sound back_home_sound
             $ player_score += 5
             $ renpy.notify("Почти правильно! Вы получили баллов: 5/12. Всего баллов: " + str(player_score) + ".")
             speech.main "Про животных, ничего необычного."
         "Программирование":
+            play sound back_home_sound
             $ player_score += 10
             $ renpy.notify("Очень близко! Вы получили баллов: 10/12. Всего баллов: " + str(player_score) + ".")
             speech.main "Программирование обсуждали. Мне понравилось, я же типа “шарю”, ха-ха-ха."
         "Злорадство":
+            play sound back_home_sound
             $ player_score += 12
             $ renpy.notify("Правильно! Вы получили баллов: 12/12. Всего баллов: " + str(player_score) + ".")
             speech.main "Шаде... Ше... Schadenfreude. Scha-den-freu-de. Язык сломаешь."
@@ -774,5 +800,6 @@ label back_home_script:
     else:
         speech.main "Математика? Да там... Ну... Да ничего интересного..."
         speech.main "Просто.. Сам понимаешь."
+    stop ambient fadeout .5
     hide screen back_home_scene_3 with usual_transition
     return

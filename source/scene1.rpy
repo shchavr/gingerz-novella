@@ -1,8 +1,55 @@
 label scene1_script:
+    call prologue_script 
     call desk_interactive_script
     call desk_flashback_script 
     call room_packing_script
     return
+
+
+
+
+
+
+
+
+
+
+screen prologue_scene_1(how):
+    add "bg_prologue.jpg" fit "fill" at how
+    zorder -10
+
+define prologue_music = "Siren.mp3"
+define prologue_ambient = "Quiet Noise.mp3"
+define prologue_sound = "Short Applause.mp3"
+
+label prologue_script:
+    show screen prologue_scene_1(None) with usual_transition
+    play music prologue_music
+    play ambient prologue_ambient loop fadein .5
+    ""
+    show screen prologue_scene_1(blur_out)
+    speech.thought "Я сидел на первом ряду в этом концертном зале и смотрел на пустую сцену."
+    speech.thought "..."
+    speech.main "Вся слава должна быть мне?{w} Или всё идет так, как и должно."
+    speech.main "Я поступил неправильно, доверившись.{w} Или же наоборот, правильно?"
+    speech.thought "..."
+    play sound prologue_sound
+    speech.thought "Я отдалённо слышал аплодисменты."
+    speech.main "Мне выходить на сцену?"
+    speech.thought "Я должен заполнить это пустое место?"
+    speech.thought "..."
+    speech.main "Почему вы не отвечаете на мои вопросы?"
+    speech.thought "..."
+    stop ambient fadeout .5
+    stop music fadeout .5
+    speech.main "{sc=5}Почему вы молчите?!{/sc}"
+    hide screen prologue_scene_1 with usual_transition
+    speech.thought "..."
+    return
+
+
+
+
 
 
 
@@ -39,9 +86,12 @@ label ask_ai_script:
     if (not asked_ai) and (not asking_smth):
         $ asking_smth = True
         $ asked_ai = True
-        speech.main "Слушай, Алиса! Расскажи о себе!"
+        speech.main "Слушай, Алиса!{w} Расскажи о себе!"
         speech.alice "Я — голосовой помощник, который может найти ответ на любой вопрос."
-        speech.thought "А это {a=https://programs.edu.urfu.ru/ru/10591/}{i}искусственный интеллект{/i}{/a}. Удивительная штука, все так говорят. Меня она почему-то особо не удивляет."
+        if not notified_links:
+            $ notified_links = True
+            $ renpy.notify("На ссылки в репликах можно и нужно нажимать, они помогут лучше понять историю.")
+        speech.thought "А это {a=https://programs.edu.urfu.ru/ru/10591/}{i}искусственный интеллект{/i}{/a}.{w} Удивительная штука, все так говорят.{w} Меня она почему-то особо не удивляет."
         $ asking_smth = False
     return
 
@@ -49,11 +99,14 @@ label ask_hf_script:
     if (not asked_hf) and (not asking_smth):
         $ asking_smth = True
         $ asked_hf = True
-        speech.thought "Это мои наушники, я люблю слушать {a=https://youtu.be/xm3YgoEiEDc?autoplay=1}{i}музыку{/i}{/a}. Чаще рок, иногда рэп... Поп тоже слушаю. Егор Крид, но редко..."
+        if not notified_links:
+            $ notified_links = True
+            $ renpy.notify("На ссылки в репликах можно и нужно нажимать, они помогут лучше понять историю.")
+        speech.thought "Это мои наушники, я люблю слушать {a=https://youtu.be/xm3YgoEiEDc?autoplay=1}{i}музыку{/i}{/a}.{w} Чаще рок, иногда рэп... Поп тоже слушаю.{w} Егор Крид, но редко..."
         speech.thought "..."
         speech.thought "Ладно, неважно."
-        speech.thought "Папа хочет, чтобы я был радистом. Но пока что от {a=https://priem-rtf.urfu.ru/ru/baccalaureate/electronics-radio-engineering-and-communication-systems/radio-engineering/}{i}радиотехники{/i}{/a} я далек: максимум слушаю радио с утра и знаю, где памятник Попова."
-        speech.thought "Проспект Ленина 39, город Екатеринбург. Видите? Знаю."
+        speech.thought "Папа хочет, чтобы я был радистом.{w} Но пока что от {a=https://priem-rtf.urfu.ru/ru/baccalaureate/electronics-radio-engineering-and-communication-systems/radio-engineering/}{i}радиотехники{/i}{/a} я далек: максимум слушаю радио с утра и знаю, где памятник Попова."
+        speech.thought "Проспект Ленина 39, город Екатеринбург.{w} Видите? Знаю."
         $ asking_smth = False
     return
 
@@ -61,7 +114,7 @@ label ask_lamp_script:
     if (not asked_lamp) and (not asking_smth):
         $ asking_smth = True
         $ asked_lamp = True
-        speech.thought "Учение свет. Неучение тьма. Грустно, что, зная пословицу наизусть, я не знаю её автора. Надо загуглить."
+        speech.thought "Учение свет. Неучение тьма.{w} Грустно, что, зная пословицу наизусть, я не знаю её автора.{w} Надо загуглить."
         $ asking_smth = False
     return
 
@@ -72,7 +125,7 @@ label ask_water_script:
         speech.thought "Монооксид дигидрогена, гидроксид водорода, гидроксильная кислота, оксидан, дигидрид кислорода."
         speech.thought "Было бы максимально смешно, если бы в названии было аж два о."
         speech.thought "..."
-        speech.thought "Мне смешно, а вам... не знаю."
+        speech.thought "Мне смешно, а вам...{w} не знаю."
         $ asking_smth = False
     return
 
@@ -80,8 +133,11 @@ label ask_pc_script:
     if (not asked_pc) and (not asking_smth):
         $ asking_smth = True
         $ asked_pc = True
-        speech.thought "Это мой компьютер, вы и сами видите. Урвал на популярном маркетплейсе почти задаром. Ничего необычного."
-        speech.thought "Хотя даже такая простая вещь может иметь связь с моей будущей профессией. Вдруг я стану {a=https://programs.edu.urfu.ru/ru/10588/}{i}системным инженером{/i}{/a}?"
+        speech.thought "Это мой компьютер, вы и сами видите.{w} Урвал на популярном маркетплейсе почти задаром.{w} Ничего необычного."
+        if not notified_links:
+            $ notified_links = True
+            $ renpy.notify("На ссылки в репликах можно и нужно нажимать, они помогут лучше понять историю.")
+        speech.thought "Хотя даже такая простая вещь может иметь связь с моей будущей профессией.{w} Вдруг я стану {a=https://programs.edu.urfu.ru/ru/10588/}{i}системным инженером{/i}{/a}?"
         speech.thought "Может и не стану."
         $ asking_smth = False
     return
@@ -96,13 +152,13 @@ define desk_interactive_music = "Toby Fox — Home.mp3"
 label desk_interactive_script:
     show screen desk_interactive_scene with usual_transition
     play music desk_interactive_music
-    $ renpy.notify("На ссылки в репликах можно и нужно нажимать, они помогут лучше понять историю.")
+    $ renpy.notify("Подсказка: используйте мышку, чтобы наводить ею на предметы.")
     speech.thought "Интересно, что практически всё вокруг нас связано с айти."
     speech.thought "Ну, мне интересно... как вам, не знаю."
     while (not asked_ai) or (not asked_hf) or (not asked_lamp) or (not asked_water) or (not asked_pc):
         ""
     speech.thought "Да... Когда я просыпаюсь в 6 утра, то часто болтаю сам с собой."
-    speech.thought "Довольно бездельничать, надо собираться. Сперва узнаю расписание, вроде сохранял на компьютере."
+    speech.thought "Довольно бездельничать, надо собираться.{w} Сперва узнаю расписание, вроде сохранял на компьютере."
     while not asked_all:
         ""
     hide screen desk_interactive_scene with usual_transition
@@ -121,12 +177,12 @@ screen desk_flashback_scene_1:
     add "schedule_1.png" fit "fill"
     zorder -10
 
-screen desk_flashback_scene_2:
-    add "bg_headon.jpg" fit "fill"
+screen desk_flashback_scene_2(how):
+    add "bg_headon.jpg" fit "fill" at how
     showif not chose_subjects:
-        add "schedule_2.png" fit "fill"
+        add "schedule_2.png" fit "fill" at how
     showif chose_subjects:
-        add "bsod.png" fit "fill"
+        add "bsod.png" fit "fill" at how
     zorder -10
 
 screen desk_flashback_scene_3:
@@ -134,8 +190,8 @@ screen desk_flashback_scene_3:
     zorder -10
 
 define desk_flashback_sound = "Sad Trombone.mp3"
-define desk_flashback_music = "Toby Fox — Home (Music Box).mp3"
-
+define desk_flashback_music_1 = "Toby Fox — Dating Tense!.mp3"
+define desk_flashback_music_2 = "Toby Fox — Home (Music Box).mp3"
 
 label desk_flashback_script:
     show screen desk_flashback_scene_1 with usual_transition
@@ -144,12 +200,20 @@ label desk_flashback_script:
     show screen text_scene("Неделю назад...") with usual_transition
     ""
     hide screen text_scene with usual_transition
-    show screen desk_flashback_scene_2 with usual_transition
+    show screen desk_flashback_scene_2(None) with usual_transition
+    stop music fadeout .5
+    play music desk_flashback_music_1 fadein .5
+    show screen desk_flashback_scene_2(blur_out)
+    $ portrait_vanya.appear("undressed", "normal", .5, True)
     speech.vanya "Десять-ноль-ноль, чувак!"
     speech.vanya "Заходим, быстрее!"
+    $ portrait_vanya.morph(None, "sad", None, None)
     speech.vanya "Бырее, мы ща не успеем нифига!"
+    $ portrait_vanya.morph(None, None, None, False)
     speech.narrator "*Ваня отчаянно клацает мышкой*"
+    $ portrait_vanya.morph(None, None, None, True)
     speech.vanya "Да святая моя пятка, етить твою малину... Не успел. А ты там как, ..."
+    $ portrait_vanya.morph(None, None, None, False)
     while True:
         $ player_name = renpy.input("{i}Придумайте имя нашему герою! {size=-10}(не героине, к сожалению){/size}{/i}")
         $ player_name = player_name.strip()
@@ -158,18 +222,25 @@ label desk_flashback_script:
         else:
             jump desk_name_input_scene_break
     label desk_name_input_scene_break:
+    $ player_name = " ".join([part[0:1].upper() + part[1:].lower() for part in player_name.split()])
+    $ portrait_vanya.morph(None, None, None, True)
     speech.vanya "Да святая моя пятка, етить твою малину... Не успел. А ты там как, [player_name]?"
-    stop music
+    show screen desk_flashback_scene_2(blur_in)
+    $ portrait_vanya.disappear()
+    stop music fadeout .5
     play sound desk_flashback_sound
     $ chose_subjects = True
     speech.main "Всё прекрасно..."
+    play music desk_flashback_music_2 fadein .5
+    show screen desk_flashback_scene_2(blur_out)
+    $ portrait_vanya.appear("undressed", "sad", .5, True)
     speech.vanya "Чувак, мы влипли."
+    $ portrait_vanya.disappear()
     hide screen desk_flashback_scene_2 with usual_transition
     show screen desk_flashback_scene_1 with usual_transition
     speech.thought "Мда."
     hide screen desk_flashback_scene_1 with usual_transition
     show screen desk_flashback_scene_3 with usual_transition
-    play music desk_flashback_music
     speech.main "Влипли... Ничего страшного. От четырех пар в понедельник ещё никто не умирал."
     speech.main "Источник информации: живые второкурсники."
     hide screen desk_flashback_scene_3 with usual_transition
@@ -207,7 +278,9 @@ screen room_packing_scene:
             imagebutton idle "empty.png" hover "question.png" action Call("ask_bag_script") at fade_in_out
         vbox xpos .3 ypos .3 xanchor .5 yanchor .5:
             imagebutton idle "empty.png" hover "question.png" action Call("ask_door_script") at fade_in_out
-    
+
+define room_packing_ambient = "Clock Ticking.mp3"
+define room_packing_music = "Toby Fox — Stronger Monsters.mp3"
 define room_packing_sound_1 = "Negative.mp3"
 define room_packing_sound_2 = "Positive.mp3"
 
@@ -316,14 +389,14 @@ label ask_eng_script:
         $ asking_smth = True
         if packed_eng:
             menu:
-                speech.thought "Тетрадь по англискому. Я уже положил её с собой. Оставить тут?"
+                speech.thought "Тетрадь по английскому. Я уже положил её с собой. Оставить тут?"
                 "Оставить тут":
                     $ packed_eng = False
                 "Взять с собой":
                     $ packed_eng = True
         else:
             menu:
-                speech.thought "Тетрадь по англискому. Я ещё не взял её с собой. Положить в рюкзак?"
+                speech.thought "Тетрадь по английскому. Я ещё не взял её с собой. Положить в рюкзак?"
                 "Оставить тут":
                     $ packed_eng = False
                 "Взять с собой":
@@ -357,7 +430,7 @@ label ask_door_script:
             $ if packed_stud: tmp += ["студенческий билет"]
             $ if packed_org: tmp += ["тетрадь по ОРГ"]
             $ if packed_pe: tmp += ["спортивную форму"]
-            $ if packed_eng: tmp += ["тетрадь по английский"]
+            $ if packed_eng: tmp += ["тетрадь по английскому"]
             $ tmp = ", ".join(tmp)
             menu:
                 speech.thought "Я взял с собой [tmp]. Можно идти или нужно взять что-то ещё?"
@@ -371,7 +444,10 @@ label ask_door_script:
 label room_packing_script:
     $ asking_smth = True
     show screen room_packing_scene with usual_transition
-    speech.main "Есть пять минут на сборы, иначе опоздаю в {a=https://rtf.urfu.ru/ru/}радик{/a}. У меня сегодня..."
+    play ambient room_packing_ambient loop fadein .5
+    stop music fadeout .5
+    play music room_packing_music fadein .5
+    speech.main "Есть пять минут на сборы, иначе опоздаю в {a=https://rtf.urfu.ru/ru/}радик{/a}.{w} У меня сегодня..."
     speech.alice "Тяжелый день. Приготовьтесь к лекции и практике по физике, английскому, физкультуре. Не забудьте {a=https://vk.com/wall-22301031_205712}студенческий{/a}."
     speech.thought "Так, надо ничего не забыть: {b}две физики, английский, физкультура, студик...{/b}"
     $ renpy.notify("Подсказка: посмотреть историю диалогов можно, нажав на \"История\" внизу экрана.")
@@ -384,11 +460,12 @@ label room_packing_script:
     if tmp == 10:
         play sound room_packing_sound_2
         $ renpy.notify("Ура! Рюкзак собран правильно. Баллы: 10/10. Всего баллов: " + str(player_score) + ".")
-        speech.thought "Успел и даже ничего не забыл! Пятнадцать минут и я в радике."
+        speech.thought "Успел и даже ничего не забыл!{w} Пятнадцать минут и я в радике."
     else:
         play sound room_packing_sound_1
         $ renpy.notify("Ой... Где-то допущена ошибка. Баллы: " + str(tmp) + "/10. Всего баллов: " + str(player_score) + ".")
-        speech.thought "Кажется здесь что-то не так..."
+        speech.thought "Кажется, здесь что-то не так..."
+    stop ambient fadeout .5
     hide screen room_packing_scene with usual_transition
     $ renpy.notify("С этого момента за каждое Ваше действие начисляются баллы. Их количество может повлиять на исход игры.")
     $ asking_smth = False

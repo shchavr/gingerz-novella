@@ -39,7 +39,9 @@ define config.version = "1.0"
 ## Text that is placed on the game's about screen. Place the text between the
 ## triple-quotes, and leave a blank line between paragraphs.
 
-define gui.about = """f"""
+define gui.about = """Взрослая жизнь... У-у-у, вам страшно? Вот и главному герою тоже. Он только выпустился из школы и совсем не знает, что ждёт его впереди, в университетской жизни. Позади него была школа, а сейчас впереди возвышается внушительный фасад университета УрФУ.
+\n“Кем я буду? Зачем я поступил сюда? Что даст мне высшее образование? Какую профессию выбрать?” Эти и многие другие вопросы спрашивает герой у стены в своей общаге. Он думает, что не может стать хорошим специалистом и обрести друзей. А может всё-таки... сможет?
+\nЧтобы не мучиться и поскорее ответить на этот вопрос, сами проследите творческий путь первокурсника и попытайтесь выжить среди врагов и завистников. Как думаете, у вас получится?"""
 
 define config.rollback_enabled = False
 ## A short name for the game used for executables and directories in the built
@@ -94,7 +96,7 @@ define config.window_hide_transition = usual_transition
 ## Controls the default text speed. The default, 0, is infinite, while any other
 ## number is the number of characters per second to type out.
 
-default preferences.text_cps = 50
+default preferences.text_cps = 40
 
 
 ## The default auto-forward delay. Larger numbers lead to longer waits, with 0

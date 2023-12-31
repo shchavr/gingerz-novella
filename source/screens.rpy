@@ -353,22 +353,100 @@ style navigation_button_text:
 ##
 ## https://www.renpy.org/doc/html/screen_special.html#main-menu
 
-define main_menu_slides = ["title.jpg", "bg_alley_empty.jpg", "bg_guk_sky.jpg", "bg_rtf_coffeeshop.jpg", "bg_none_1.jpg", "bg_street_people.jpg", "bg_none_2.jpg", "bg_none_3.jpg", "bg_none_4.jpg"]
-define hold_slide = 10.
+define slides = ["title.jpg",           "bg_alley_empty.jpg",       "bg_guk_sky.jpg",           "bg_cat_pillow.jpg",        "bg_rtf_coffeeshop.jpg",
+                "bg_none_1.jpg",        "bg_viktoriya_mch.jpg",     "bg_zephyrka_selfie.jpg",   "bg_street_people.jpg",     "bg_none_2.jpg",
+                "bg_cat_floor.jpg",     "bg_none_3.jpg",            "bg_cat_tigra.jpg",         "bg_egor_mch.jpg",          "bg_none_4.jpg",
+                "bg_mch_cat.jpg",       "bg_bar.jpg",               "bg_rtf_parking.jpg",       "bg_history_teacher.jpg",   "bg_none_5.jpg"]
+define slides_filt = ["filt_1.jpg",     "bg_rtf_entrance.jpg",  "bg_desks_students.jpg",    "bg_nine_sk.jpg",   "bg_street_people.jpg",     "bg_cat_pillow.jpg",    "bg_canteen_inside.jpg",
+                            "bg_viktoriya_mch.jpg",     "filt_9.jpg",   "filt_10.jpg",  "bg_stepashka.jpg",     "bg_history_teacher.jpg"]
+define slides_orig = ["orig_1.jpg",     "orig_2.jpg",           "orig_3.jpg",               "orig_4.jpg",       "orig_5.jpg",               "orig_6.jpg",           "orig_7.jpg",
+                            "orig_8.jpg",               "orig_9.jpg",   "orig_10.jpg",  "orig_11.jpg",          "orig_12.jpg"]
+define slides_text = ["{b}Главный учебный корпус УрФУ{/b}\nулица Мира, 19",
+                        "{b}Институт радиотехники УрФУ{/b}\nулица Мира, 32",
+                        "{b}Пара по истории России в “Радике”{/b}\nулица Мира, 32",
+                        "{b}Общежитие №9{/b}\nулица Фонвизина, 8",
+                        "{b}“Аллейка”{/b}\nперекрёсток Малышева—Мира",
+                        "{b}Милашкинс из котокафе “Мяу”{/b}\nулица Чапаева, 17",
+                        "{b}Столовая ГУКа{/b}\nулица Мира, 19",
+                        "{b}А вот и главные герои{/b}\nулица Мира, 32",
+                        "{b}Кажется, Ваня — не совсем Ваня{/b}\nулица Фонвизина, 8",
+                        "{b}Пряники общаются-слипаются{/b}\nулица Мира, 32",
+                        "{b}Андрей Викторович, пара физики{/b}\nулица Мира, 32",
+                        "{b}Алексей Вячеславович, пара истории{/b}\nулица Мира, 32"]
+
+define hold_slide = 5.
+define hold_slide_alt = 7.
 define fade_slide = .5
+define crop_slide = 1.
+define zoom_portion = 1.2
 
 transform slide(index):
-    xanchor .5 yanchor .5 xpos .5 ypos .5 subpixel True alpha 0. zoom 1.
+    xanchor .5 yanchor .5 xpos .5 ypos .5 subpixel True alpha 0. zoom (zoom_portion if index % 2 == 0 else 1.)
     linear index * hold_slide
     parallel:
         ease fade_slide alpha 1.
         linear hold_slide - fade_slide
     parallel:
-        linear hold_slide zoom 1.3
+        linear hold_slide zoom (1. if index % 2 == 0 else zoom_portion)
     parallel:
         linear hold_slide - fade_slide
         ease fade_slide alpha 0.
-    linear (len(main_menu_slides) - 1 - index) * hold_slide
+    linear (len(slides) - 1 - index) * hold_slide
+    repeat
+
+transform slide_zoom_n_fade(index):
+    xanchor .5 yanchor .5 xpos .5 ypos .5 subpixel True alpha 0. zoom (zoom_portion if index % 2 == 0 else 1.)
+    linear index * hold_slide_alt
+    parallel:
+        ease fade_slide alpha 1.
+        linear hold_slide_alt - fade_slide
+    parallel:
+        linear hold_slide_alt zoom (1. if index % 2 == 0 else zoom_portion)
+    parallel:
+        linear hold_slide_alt - fade_slide
+        ease fade_slide alpha 0.
+    linear (len(slides_filt) - 1 - index) * hold_slide_alt
+    repeat
+
+transform slide_fade(index):
+    alpha 0.
+    linear index * hold_slide_alt
+    parallel:
+        ease fade_slide alpha 1.
+        linear hold_slide_alt - fade_slide
+    parallel:
+        linear hold_slide_alt - fade_slide
+        ease fade_slide alpha 0.
+    linear (len(slides_filt) - 1 - index) * hold_slide_alt
+    repeat
+
+transform slide_orig(index):
+    xanchor .5 yanchor .5 xpos .5 ypos .5 subpixel True alpha 0.
+    linear index * hold_slide_alt
+    linear fade_slide
+    alpha 1.
+    linear hold_slide_alt - fade_slide
+    linear (len(slides_filt) - 1 - index) * hold_slide_alt
+    repeat
+
+transform slide_filt(index):
+    xanchor 1. yanchor .5 xpos 1. ypos .5 subpixel True alpha 1. crop (0., 0., 1., 1.)
+    linear index * hold_slide_alt
+    parallel:
+        linear hold_slide_alt - fade_slide
+        alpha 0.
+        linear fade_slide
+    parallel:
+        linear (hold_slide_alt - crop_slide) * .5
+        ease crop_slide crop (1., 0., 0., 1.)
+        linear (hold_slide_alt - crop_slide) * .5
+    linear (len(slides_filt) - 1 - index) * hold_slide_alt
+    repeat
+
+transform spn:
+    subpixel True rotate_pad True
+    rotate 0.
+    linear 1. rotate 360.
     repeat
 
 screen main_menu():
@@ -376,15 +454,77 @@ screen main_menu():
     ## This ensures that any other menu screen is replaced.
     tag menu
 
-    add main_menu_slides[0] at slide(0)
-    add main_menu_slides[1] at slide(1)
-    add main_menu_slides[2] at slide(2)
-    add main_menu_slides[3] at slide(3)
-    add main_menu_slides[4] at slide(4)
-    add main_menu_slides[5] at slide(5)
-    add main_menu_slides[6] at slide(6)
-    add main_menu_slides[7] at slide(7)
-    add main_menu_slides[8] at slide(8)
+    showif not all(persistent.endings):
+        add slides[0] at slide(0)
+        add slides[1] at slide(1)
+        add slides[2] at slide(2)
+        add slides[3] at slide(3)
+        add slides[4] at slide(4)
+        add slides[5] at slide(5)
+        add slides[6] at slide(6)
+        add slides[7] at slide(7)
+        add slides[8] at slide(8)
+        add slides[9] at slide(9)
+        add slides[10] at slide(10)
+        add slides[11] at slide(11)
+        add slides[12] at slide(12)
+        add slides[13] at slide(13)
+        add slides[14] at slide(14)
+        add slides[15] at slide(15)
+        add slides[16] at slide(16)
+        add slides[17] at slide(17)
+        add slides[18] at slide(18)
+        add slides[19] at slide(19)
+    showif all(persistent.endings):
+        fixed at slide_zoom_n_fade(0):
+            add slides_orig[0] at slide_orig(0)
+            add slides_filt[0] at slide_filt(0)
+        fixed at slide_zoom_n_fade(1):
+            add slides_orig[1] at slide_orig(1)
+            add slides_filt[1] at slide_filt(1)
+        fixed at slide_zoom_n_fade(2):
+            add slides_orig[2] at slide_orig(2)
+            add slides_filt[2] at slide_filt(2)
+        fixed at slide_zoom_n_fade(3):
+            add slides_orig[3] at slide_orig(3)
+            add slides_filt[3] at slide_filt(3)
+        fixed at slide_zoom_n_fade(4):
+            add slides_orig[4] at slide_orig(4)
+            add slides_filt[4] at slide_filt(4)
+        fixed at slide_zoom_n_fade(5):
+            add slides_orig[5] at slide_orig(5)
+            add slides_filt[5] at slide_filt(5)
+        fixed at slide_zoom_n_fade(6):
+            add slides_orig[6] at slide_orig(6)
+            add slides_filt[6] at slide_filt(6)
+        fixed at slide_zoom_n_fade(7):
+            add slides_orig[7] at slide_orig(7)
+            add slides_filt[7] at slide_filt(7)
+        fixed at slide_zoom_n_fade(8):
+            add slides_orig[8] at slide_orig(8)
+            add slides_filt[8] at slide_filt(8)
+        fixed at slide_zoom_n_fade(9):
+            add slides_orig[9] at slide_orig(9)
+            add slides_filt[9] at slide_filt(9)
+        fixed at slide_zoom_n_fade(10):
+            add slides_orig[10] at slide_orig(10)
+            add slides_filt[10] at slide_filt(10)
+        fixed at slide_zoom_n_fade(11):
+            add slides_orig[11] at slide_orig(11)
+            add slides_filt[11] at slide_filt(11)
+        add "address.png"
+        text "{color=[gui.accent_color]}{size=+10}[slides_text[0]]{/color}{/size}" text_align 1. xanchor 1. yanchor 1. xpos .92 ypos .88 at slide_fade(0)
+        text "{color=[gui.accent_color]}{size=+10}[slides_text[1]]{/color}{/size}" text_align 1. xanchor 1. yanchor 1. xpos .92 ypos .88 at slide_fade(1)
+        text "{color=[gui.accent_color]}{size=+10}[slides_text[2]]{/color}{/size}" text_align 1. xanchor 1. yanchor 1. xpos .92 ypos .88 at slide_fade(2)
+        text "{color=[gui.accent_color]}{size=+10}[slides_text[3]]{/color}{/size}" text_align 1. xanchor 1. yanchor 1. xpos .92 ypos .88 at slide_fade(3)
+        text "{color=[gui.accent_color]}{size=+10}[slides_text[4]]{/color}{/size}" text_align 1. xanchor 1. yanchor 1. xpos .92 ypos .88 at slide_fade(4)
+        text "{color=[gui.accent_color]}{size=+10}[slides_text[5]]{/color}{/size}" text_align 1. xanchor 1. yanchor 1. xpos .92 ypos .88 at slide_fade(5)
+        text "{color=[gui.accent_color]}{size=+10}[slides_text[6]]{/color}{/size}" text_align 1. xanchor 1. yanchor 1. xpos .92 ypos .88 at slide_fade(6)
+        text "{color=[gui.accent_color]}{size=+10}[slides_text[7]]{/color}{/size}" text_align 1. xanchor 1. yanchor 1. xpos .92 ypos .88 at slide_fade(7)
+        text "{color=[gui.accent_color]}{size=+10}[slides_text[8]]{/color}{/size}" text_align 1. xanchor 1. yanchor 1. xpos .92 ypos .88 at slide_fade(8)
+        text "{color=[gui.accent_color]}{size=+10}[slides_text[9]]{/color}{/size}" text_align 1. xanchor 1. yanchor 1. xpos .92 ypos .88 at slide_fade(9)
+        text "{color=[gui.accent_color]}{size=+10}[slides_text[10]]{/color}{/size}" text_align 1. xanchor 1. yanchor 1. xpos .92 ypos .88 at slide_fade(10)
+        text "{color=[gui.accent_color]}{size=+10}[slides_text[11]]{/color}{/size}" text_align 1. xanchor 1. yanchor 1. xpos .92 ypos .88 at slide_fade(11)
     add "title.png"
 
     ## This empty frame darkens the main menu.
@@ -407,10 +547,62 @@ screen main_menu():
                 text "[config.version]":
                     style "main_menu_version"
 
-    vbox xpos 1.26 ypos .13 xanchor 1. yanchor 0.:
-        spacing -50
-        text "{color=[gui.accent_color]}{size=-3}от команды Рекурсивные Пряники{/size}{/color} " xanchor 1.
-        text "{color=[gui.accent_color]}{size=+120}{b}Gingers{/b}{/size}{/color}" xanchor 1.
+    vbox xpos .58 ypos .13 yanchor 0. xanchor 0.:
+        spacing -54
+        text "{color=[gui.accent_color]}{size=-4}                        от команды “Рекурсивные Пряники”{/size}{/color} "
+        text "{color=[gui.accent_color]}{size=+120}{b}Gingers{/b}{/size}{/color}"
+        showif any(persistent.endings):
+            hbox yanchor -.65:
+                text "{color=[gui.accent_color]}{size=-4} Открытые концовки:{/size}{/color}"
+                spacing 115
+                showif not all(persistent.endings):
+                    hbox xfill True xsize .175:
+                        spacing -50
+                        showif persistent.endings[0]:
+                            text "{color=[gui.accent_color]}★{/color}"
+                        showif not persistent.endings[0]:
+                            text "{color=[gui.accent_color]}☆{/color}"
+
+                        showif persistent.endings[1]:
+                            text "{color=[gui.accent_color]}★{/color}"
+                        showif not persistent.endings[1]:
+                            text "{color=[gui.accent_color]}☆{/color}"
+
+                        showif persistent.endings[2]:
+                            text "{color=[gui.accent_color]}★{/color}"
+                        showif not persistent.endings[2]:
+                            text "{color=[gui.accent_color]}☆{/color}"
+
+                        showif persistent.endings[3]:
+                            text "{color=[gui.accent_color]}★{/color}"
+                        showif not persistent.endings[3]:
+                            text "{color=[gui.accent_color]}☆{/color}"
+
+                        showif persistent.endings[4]:
+                            text "{color=[gui.accent_color]}★{/color}"
+                        showif not persistent.endings[4]:
+                            text "{color=[gui.accent_color]}☆{/color}"
+
+                        showif persistent.endings[5]:
+                            text "{color=[gui.accent_color]}★{/color}"
+                        showif not persistent.endings[5]:
+                            text "{color=[gui.accent_color]}☆{/color}"
+
+                        showif persistent.endings[6]:
+                            text "{color=[gui.accent_color]}★{/color}"
+                        showif not persistent.endings[6]:
+                            text "{color=[gui.accent_color]}☆{/color}"
+
+                showif all(persistent.endings):
+                    hbox xfill True xsize .175 xanchor .01 yanchor .15:
+                        spacing -50
+                        text "{color=[gui.accent_color]}★{/color}" at spn
+                        text "{color=[gui.accent_color]}★{/color}" at spn
+                        text "{color=[gui.accent_color]}★{/color}" at spn
+                        text "{color=[gui.accent_color]}★{/color}" at spn
+                        text "{color=[gui.accent_color]}★{/color}" at spn
+                        text "{color=[gui.accent_color]}★{/color}" at spn
+                        text "{color=[gui.accent_color]}★{/color}" at spn
 
 
 style main_menu_frame is empty
@@ -590,14 +782,11 @@ screen about():
 
         vbox:
 
-            label "[config.name!t]"
-            text _("Version [config.version!t]\n")
+            label "{size=+10}[config.name!t] v1.0{/size}\n"
 
-            ## gui.about is usually set in options.rpy.
-            if gui.about:
-                text "[gui.about!t]\n"
-
-            text _("Made with {a=https://www.renpy.org/}Ren'Py{/a} [renpy.version_only].\n\n[renpy.license!t]")
+            text "{i}[gui.about!t]{/i}\n\n{size=-13}Игра сделана при помощи {a=https://www.renpy.org/}Ren'Py{/a} [renpy.version_only]. Программа распространяется по лицензии {a=https://ru.wikipedia.org/wiki/Лицензия_MIT}MIT{/a} как свободное программное обеспечение в целях обучения. Все права на изображения, звуковой и другой медиа-контент, принадлежат их настоящим правообладателям, не нарушаются и не присваиваются разработчиками. Совпадения с действительностью намерены, но так или иначе не подразумевают полное соответствие; иначе случайны. Руководствуйтесь здравым смыслом.{/size}" justify True
+            
+            text "\n“Рекурсивные Пряники”, УрФУ, Екатеринбург, Россия, 2023."
 
 
 style about_label is gui_label
@@ -759,6 +948,15 @@ style slot_button_text:
 ##
 ## https://www.renpy.org/doc/html/screen_special.html#preferences
 
+init -1 python:
+    def dltprsstnt():
+        for i in range(len(persistent.endings)):
+            persistent.endings[i] = False
+        for i in renpy.list_saved_games(regexp = '.', fast = True):
+            renpy.unlink_save(i)
+        config.main_menu_music = splashscreen_music_1
+        renpy.play(config.main_menu_music, channel = "music")
+
 screen preferences():
 
     tag menu
@@ -805,6 +1003,10 @@ screen preferences():
                         label _("Auto-Forward Time")
 
                         bar value Preference("auto-forward time")
+                    
+                    textbutton "\nУдалить прогресс" action Confirm("Вы потеряете сохранения, и пройденные концовки\n придётся проходить снова. Вы уверены?", dltprsstnt, Return())
+                    
+                    
 
                 vbox:
 

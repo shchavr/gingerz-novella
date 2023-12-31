@@ -21,7 +21,7 @@ define speech.generic = Character("", who_prefix = "{color=#999999}", who_suffix
 
 
 transform motion.robust(position, focused, appear):
-    ease (0. if appear else .2) ypos (1. if focused else 1.05) zoom (1.05 if focused else 1.) xpos position
+    ease (0. if appear else .2) ypos (1. if focused else 1.05) zoom (1.1 if focused else 1.) xpos position
 
 screen portrait_main(clothing, emotion, position, focused, appear):
     add "ch_main_[clothing]_[emotion].png" xanchor .5 yanchor 1. at motion.robust(position, focused, appear)
@@ -47,9 +47,14 @@ screen portrait_vanya(clothing, emotion, position, focused, appear):
     add "ch_vanya_[clothing]_[emotion].png" xanchor .5 yanchor 1. at motion.robust(position, focused, appear)
     zorder -5
 
-init python:
-    class portrait:
+screen portrait_egor(clothing, emotion, position, focused, appear):
+    add "ch_egor_[clothing]_[emotion].png" xanchor .5 yanchor 1. at motion.robust(position, focused, appear)
+    zorder -5
+
+init -1 python:
+    class portrait(object):
         def __init__(self, name):
+            _object.__init__(self)
             self.name = name
         def appear(self, clothing, emotion, position, focused): # можно добавить delay перед выполнением в transform
             self.clothing, self.emotion, self.position, self.focused = clothing, emotion, position, focused
@@ -64,14 +69,14 @@ init python:
         def disappear(self):
             renpy.transition(usual_transition)
             renpy.hide_screen(self.name)
-
-        main = valeriya = viktoriya = kseniya = polina = vanya = None
-    portrait.main = portrait("portrait_main")
-    portrait.valeriya = portrait("portrait_valeriya")
-    portrait.viktoriya = portrait("portrait_viktoriya")
-    portrait.kseniya = portrait("portrait_kseniya")
-    portrait.polina = portrait("portrait_polina")
-    portrait.vanya = portrait("portrait_vanya")
+        main = valeriya = viktoriya = kseniya = polina = vanya = egor = None
+default portrait_main = portrait("portrait_main")
+default portrait_valeriya = portrait("portrait_valeriya")
+default portrait_viktoriya = portrait("portrait_viktoriya")
+default portrait_kseniya = portrait("portrait_kseniya")
+default portrait_polina = portrait("portrait_polina")
+default portrait_vanya = portrait("portrait_vanya")
+default portrait_egor = portrait("portrait_egor")
 
 
 
